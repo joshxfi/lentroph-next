@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres
+    container_name: lentroph-pg
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DATABASE=lentroph-db
+      - POSTGRES_PASSWORD=lentroph
+    restart: always
+    volumes:
+      - db:/var/lib/postgres
+
+volumes:
+  db:
+    driver: local
