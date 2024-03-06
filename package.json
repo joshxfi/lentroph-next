@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate": "prisma generate --schema=./src/prisma/schema.prisma",
+    "generate:db": "prisma generate --schema=./src/prisma/schema.prisma",
+    "push:db": "prisma db push --schema=./src/prisma/schema.prisma",
     "docker:down": "docker-compose down",
     "docker:up": "docker-compose up -d"
   },
