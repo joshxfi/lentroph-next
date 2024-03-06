@@ -1,4 +1,4 @@
 import builder from "./builder";
-import "./models";
+import "./models/user";
 
 export const schema = builder.toSchema();
