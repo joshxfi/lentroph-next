@@ -1,19 +1,8 @@
-import { createSchema, createYoga } from "graphql-yoga";
+import { createYoga } from "graphql-yoga";
+import { schema } from "@/schema";
 
 const { handleRequest } = createYoga({
-  schema: createSchema({
-    typeDefs: `
-      type Query {
-        greetings: String
-      }
-    `,
-    resolvers: {
-      Query: {
-        greetings: () =>
-          "This is the `greetings` field of the root `Query` type",
-      },
-    },
-  }),
+  schema,
 
   graphqlEndpoint: "/api/graphql",
   fetchAPI: { Response },
