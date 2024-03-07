@@ -11,7 +11,6 @@ const { handleRequest } = createYoga({
     const session = await getServerSession(authOptions);
     return {
       ...initContextCache(),
-
       userId: session?.user.id,
     };
   },

@@ -11,14 +11,12 @@ builder.prismaObject("User", {
   }),
 });
 
-builder.queryType({
-  fields: (t) => ({
-    users: t.prismaField({
-      type: ["User"],
-      resolve: async (query) =>
-        prisma.user.findMany({
-          ...query,
-        }),
-    }),
+builder.queryFields((t) => ({
+  users: t.prismaField({
+    type: ["User"],
+    resolve: async (query) =>
+      prisma.user.findMany({
+        ...query,
+      }),
   }),
-});
+}));
