@@ -4,9 +4,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/lib/db";
 
 export const authOptions: NextAuthOptions = {
-  debug: process.env.NODE_ENV === "development",
   secret: process.env.NEXTAUTH_SECRET,
-
   callbacks: {
     session: ({ session, user, trigger, newSession }) => {
       const _user = {
@@ -29,7 +27,6 @@ export const authOptions: NextAuthOptions = {
     },
   },
 
-  // @ts-ignore
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({

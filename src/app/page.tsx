@@ -1,4 +1,5 @@
 import { Logo } from "@/components/logo";
+import { RedirectButton } from "@/components/buttons/redirect";
 
 export default function Home() {
   return (
@@ -20,18 +21,13 @@ export default function Home() {
                 the latest collaborative innovations to show around the world.
               </p>
 
-              <button
-                type="button"
-                className="mt-8 rounded bg-gradient-to-tr from-purple-500 to-purple-600 px-8 py-4 font-bold text-white"
-              >
-                Get Started
-              </button>
+              <RedirectButton className="mt-4" size="lg" route="/register">Get Started</RedirectButton>
             </header>
           </div>
 
           <nav className="absolute right-0 z-10 mt-12 mr-20 flex items-center space-x-16 rounded-full bg-white py-2 pl-12 pr-2 font-medium text-secondary">
-            <a href="#">Login</a>
-            <a href="#">Register</a>
+            <a href="#">About</a>
+            <a href="#">Donate</a>
 
             <button
               type="button"
