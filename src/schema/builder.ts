@@ -5,6 +5,9 @@ import PrismaPlugin from "@pothos/plugin-prisma";
 import type PrismaTypes from "@pothos/plugin-prisma/generated";
 
 const builder = new SchemaBuilder<{
+  Context: {
+    userId: string;
+  };
   Scalars: {
     Date: { Input: Date; Output: Date };
   };
