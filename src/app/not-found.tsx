@@ -1,4 +1,5 @@
-import { RedirectButton } from "@/components/buttons/redirect";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 
 export default function Page() {
   return (
@@ -12,7 +13,9 @@ export default function Page() {
           Sorry, we couldn’t find the page you’re looking for.
         </p>
         <div className="mt-10 flex items-center justify-center gap-x-6">
-          <RedirectButton route="/">Go back home</RedirectButton>
+          <Link href="/register" className={buttonVariants()}>
+            Go Back
+          </Link>
           <a href="#" className="text-sm font-semibold text-gray-900">
             Contact support <span aria-hidden="true">&rarr;</span>
           </a>

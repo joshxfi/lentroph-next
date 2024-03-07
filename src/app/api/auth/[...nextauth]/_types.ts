@@ -1,5 +1,5 @@
+import { Role } from "@prisma/client";
 import { type DefaultSession } from "next-auth";
-import { Role } from "@umamin-global/codegen/generated/graphql";
 
 declare module "next-auth" {
   interface Session extends DefaultSession {

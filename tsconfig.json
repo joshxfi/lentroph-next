@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ESNEXT",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -14,21 +18,28 @@
     "incremental": true,
     "plugins": [
       {
+        "name": "@0no-co/graphqlsp",
+        "schema": "http://localhost:3000/api/graphql",
+        "tadaOutputLocation": "./src/graphql-env.d.ts"
+      },
+      {
         "name": "next"
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     },
-    "module": "esnext",
-    "plugins": [
-      {
-        "name": "@0no-co/graphqlsp",
-        "schema": "http://localhost:3000/api/graphql",
-        "tadaOutputLocation": "./src/graphql-env.d.ts"
-      }
-    ]
+    "module": "esnext"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

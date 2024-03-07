@@ -1,5 +1,6 @@
+import Link from "next/link";
 import { Logo } from "@/components/logo";
-import { RedirectButton } from "@/components/buttons/redirect";
+import { buttonVariants } from "@/components/ui/button";
 
 export default function Home() {
   return (
@@ -21,7 +22,14 @@ export default function Home() {
                 the latest collaborative innovations to show around the world.
               </p>
 
-              <RedirectButton className="mt-4" size="lg" route="/register">Get Started</RedirectButton>
+              <div className="mt-10 flex items-center gap-x-6">
+                <Link href="/register" className={buttonVariants()}>
+                  Get started
+                </Link>
+                <a href="#" className="text-sm font-semibold text-gray-900">
+                  Learn more <span aria-hidden="true">&rarr;</span>
+                </a>
+              </div>
             </header>
           </div>
 
