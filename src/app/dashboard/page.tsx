@@ -1,7 +1,8 @@
 "use client";
 
 import { Suspense } from "react";
-import { gql, useQuery } from "@urql/next";
+import { useQuery } from "@urql/next";
+import { graphql } from "gql.tada";
 
 export default function Page() {
   return (
@@ -11,25 +12,23 @@ export default function Page() {
   );
 }
 
-const GetUsersQuery = gql`
-  query {
+const GetUsersQuery = graphql(`
+  query GetUsers {
     users {
       id
+      bio
       image
-      email
+      username
     }
   }
-`;
+`);
 
 function Profile() {
   const [result] = useQuery({ query: GetUsersQuery });
 
   return (
     <section>
-      <h1>Profile Page</h1>
-      {result.data.users.map((user: any) => (
-        <p key={user.id}>{JSON.stringify(user, null, 2)}</p>
-      ))}
+      {result.data?.users.map((user) => <p key={user.id}>{user.username}</p>)}
     </section>
   );
 }
