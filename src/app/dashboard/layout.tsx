@@ -9,7 +9,7 @@ import {
   gql,
 } from "@urql/next";
 import { cacheExchange } from "@urql/exchange-graphcache";
-import { DashboardNavbar } from "@/components/dashboard/navbar";
+import { DashboardNavbar } from "./components/navbar";
 
 export default function DashboardLayout({
   children,

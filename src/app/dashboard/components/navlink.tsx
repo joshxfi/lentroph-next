@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { buttonVariants } from "../ui/button";
+import { buttonVariants } from "@/components/ui/button";
 
 export function NavLink({ name }: { name: string }) {
   const pathname = usePathname();

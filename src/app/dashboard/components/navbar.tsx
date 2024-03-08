@@ -1,9 +1,12 @@
 "use client";
 
-import { Logo } from "../logo";
-import { NavLink } from "./navlink";
 import { useSession } from "next-auth/react";
+
+import { Logo } from "@/components/logo";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
+import { NavLink } from "./navlink";
+import { MenuDropdown } from "./menu-dropdown";
 
 export function DashboardNavbar() {
   const { data } = useSession();
@@ -21,12 +24,14 @@ export function DashboardNavbar() {
           </div>
         </section>
 
-        <Avatar>
-          <AvatarImage src={data?.user.image ?? ""} />
-          <AvatarFallback>
-            {data?.user.username?.slice(0, 2).toUpperCase()}
-          </AvatarFallback>
-        </Avatar>
+        <MenuDropdown>
+          <Avatar className="cursor-pointer">
+            <AvatarImage src={data?.user.image ?? ""} />
+            <AvatarFallback>
+              {data?.user.username?.slice(0, 2).toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
+        </MenuDropdown>
       </div>
     </nav>
   );
