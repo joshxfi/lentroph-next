@@ -3,8 +3,9 @@ import { twMerge } from "tailwind-merge";
 import { Inter } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 
-import { Providers } from "./providers";
 import "./globals.css";
+import { Providers } from "./providers";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,7 +28,10 @@ export default function RootLayout({
         )}
       >
         <NextTopLoader />
-        <Providers>{children}</Providers>
+        <Providers>
+          <main>{children}</main>
+          <Toaster />
+        </Providers>
       </body>
     </html>
   );
