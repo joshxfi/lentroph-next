@@ -27,7 +27,14 @@ const FormSchema = z.object({
 
 const AddPostMutation = graphql(`
   mutation AddPost($content: String!) {
-    addPost(content: $content)
+    addPost(content: $content) {
+      id
+      content
+      author {
+        id
+        username
+      }
+    }
   }
 `);
 
@@ -48,6 +55,7 @@ export function PostForm() {
         return;
       }
 
+      form.reset();
       toast.success("Posted successfully.");
     });
   }

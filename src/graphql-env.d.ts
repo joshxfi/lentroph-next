@@ -48,8 +48,8 @@ export type introspection = {
             "type": {
               "kind": "NON_NULL",
               "ofType": {
-                "kind": "SCALAR",
-                "name": "Boolean",
+                "kind": "OBJECT",
+                "name": "Post",
                 "ofType": null
               }
             },

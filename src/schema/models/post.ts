@@ -25,16 +25,18 @@ builder.queryFields((t) => ({
     resolve: async (query) =>
       prisma.post.findMany({
         ...query,
+        include: { author: true },
       }),
   }),
 }));
 
 builder.mutationFields((t) => ({
-  addPost: t.boolean({
+  addPost: t.prismaField({
+    type: "Post",
     args: {
       content: t.arg.string({ required: true }),
     },
-    resolve: async (_, args, ctx) => {
+    resolve: async (_, __, args, ctx) => {
       try {
         const success = await prisma.post.create({
           data: {
@@ -42,9 +44,10 @@ builder.mutationFields((t) => ({
             content: args.content,
             author: { connect: { id: ctx.userId } },
           },
+          include: { author: true },
         });
 
-        return !!success;
+        return success;
       } catch (err) {
         console.log(err);
         throw err;
