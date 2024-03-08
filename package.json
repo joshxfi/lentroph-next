@@ -10,7 +10,8 @@
     "generate:db": "prisma generate --schema=./src/prisma/schema.prisma",
     "push:db": "prisma db push --schema=./src/prisma/schema.prisma",
     "docker:down": "docker-compose down",
-    "docker:up": "docker-compose up -d"
+    "docker:up": "docker-compose up -d",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
