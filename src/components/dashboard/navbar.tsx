@@ -1,12 +1,13 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { Logo } from "../logo";
 import { NavLink } from "./navlink";
-import { Avatar } from "@nextui-org/react";
+import { useSession } from "next-auth/react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export function DashboardNavbar() {
   const { data } = useSession();
+
   return (
     <nav className="bg-white py-6 shadow-sm mb-12">
       <div className="container mx-auto flex items-center justify-between">
@@ -20,7 +21,12 @@ export function DashboardNavbar() {
           </div>
         </section>
 
-        <Avatar src={data?.user.image ?? ""} />
+        <Avatar>
+          <AvatarImage src={data?.user.image ?? ""} />
+          <AvatarFallback>
+            {data?.user.username?.slice(0, 2).toUpperCase()}
+          </AvatarFallback>
+        </Avatar>
       </div>
     </nav>
   );
