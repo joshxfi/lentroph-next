@@ -4,6 +4,7 @@ export const PostFields = graphql(`
   fragment PostFields on Post {
     content
     author {
+      id
       username
     }
   }

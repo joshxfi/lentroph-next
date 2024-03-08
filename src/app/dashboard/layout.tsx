@@ -4,10 +4,10 @@ import { useMemo } from "react";
 import {
   UrqlProvider,
   ssrExchange,
-  cacheExchange,
   fetchExchange,
   createClient,
 } from "@urql/next";
+import { cacheExchange } from "@urql/exchange-graphcache";
 import { DashboardNavbar } from "@/components/dashboard/navbar";
 
 export default function DashboardLayout({
@@ -19,7 +19,7 @@ export default function DashboardLayout({
     const ssr = ssrExchange();
     const client = createClient({
       url: process.env.NEXT_PUBLIC_GRAPHQL_URL ?? "",
-      exchanges: [cacheExchange, ssr, fetchExchange],
+      exchanges: [cacheExchange({}), ssr, fetchExchange],
       suspense: true,
     });
 
