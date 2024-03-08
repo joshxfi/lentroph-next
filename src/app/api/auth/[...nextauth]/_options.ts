@@ -10,7 +10,6 @@ export const authOptions: NextAuthOptions = {
       const _user = {
         ...session.user,
         id: user.id,
-        role: user.role,
         bio: user.bio,
         username: user.username,
         createdAt: user.createdAt,
