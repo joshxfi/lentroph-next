@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Logo } from "@/components/logo";
 import { buttonVariants } from "@/components/ui/button";
 
@@ -50,10 +51,13 @@ export default function Home() {
 
         <div className="absolute z-20 h-full w-full bg-[#F586FF] opacity-30" />
 
-        <img
+        <Image
+          unoptimized
+          height={500}
+          width={500}
           src="/images/homepage.jpg"
           alt="Children"
-          className="object-cover"
+          className="object-cover w-screen"
         />
       </section>
     </>
