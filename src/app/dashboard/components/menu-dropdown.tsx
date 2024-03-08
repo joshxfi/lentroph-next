@@ -12,8 +12,16 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export function MenuDropdown({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+
+  const handleSignOut = () => {
+    signOut();
+    router.push("/");
+  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
@@ -57,7 +65,7 @@ export function MenuDropdown({ children }: { children: React.ReactNode }) {
         <DropdownMenuItem>Support</DropdownMenuItem>
         <DropdownMenuItem disabled>API</DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={handleSignOut}>
           Log out
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
