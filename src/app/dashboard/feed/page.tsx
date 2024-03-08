@@ -3,8 +3,8 @@
 import { Suspense } from "react";
 import { useQuery } from "@urql/next";
 import { graphql } from "gql.tada";
-import { Post, PostFields } from "@/components/dashboard/post";
-import { PostForm } from "@/components/dashboard/post-form";
+import { PostForm } from "./components/post-form";
+import { Post, PostFields } from "./components/post";
 import { Separator } from "@/components/ui/separator";
 
 export default function Page() {
