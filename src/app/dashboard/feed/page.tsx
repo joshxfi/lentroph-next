@@ -31,7 +31,7 @@ function Feed() {
   const [result] = useQuery({ query: GetPostsQuery });
 
   return (
-    <section className="max-w-screen-sm mx-auto pb-24">
+    <section className="max-w-screen-sm mx-auto">
       <PostForm />
       <Separator className="my-8 bg-zinc-500" />
 

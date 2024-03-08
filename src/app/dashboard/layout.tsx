@@ -54,7 +54,7 @@ export default function DashboardLayout({
   }, []);
 
   return (
-    <section className="bg-zinc-200 text-zinc-800 text-sm min-h-screen">
+    <section className="bg-zinc-200 text-zinc-800 text-sm min-h-screen pb-24">
       <UrqlProvider client={client} ssr={ssr}>
         <DashboardNavbar />
         <div className="container mx-auto">{children}</div>
