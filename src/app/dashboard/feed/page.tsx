@@ -5,6 +5,7 @@ import { useQuery } from "@urql/next";
 import { graphql } from "gql.tada";
 import { Post, PostFields } from "@/components/dashboard/post";
 import { PostForm } from "@/components/dashboard/post-form";
+import { Separator } from "@/components/ui/separator";
 
 export default function Page() {
   return (
@@ -30,9 +31,13 @@ function Feed() {
   const [result] = useQuery({ query: GetPostsQuery });
 
   return (
-    <section className="max-w-screen-md mx-auto">
+    <section className="max-w-screen-sm mx-auto pb-24">
       <PostForm />
-      {result.data?.posts.map((post) => <Post key={post.id} post={post} />)}
+      <Separator className="my-8 bg-zinc-500" />
+
+      <div className="space-y-4">
+        {result.data?.posts.map((post) => <Post key={post.id} post={post} />)}
+      </div>
     </section>
   );
 }

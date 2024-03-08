@@ -246,6 +246,15 @@ export type introspection = {
             "args": []
           },
           {
+            "name": "name",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
             "name": "username",
             "type": {
               "kind": "SCALAR",

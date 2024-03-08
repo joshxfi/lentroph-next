@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { twMerge } from "tailwind-merge";
 import { Inter } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 
@@ -21,12 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={twMerge(
-          inter.className,
-          "light  text-foreground bg-background",
-        )}
-      >
+      <body className={inter.className}>
         <NextTopLoader />
         <Providers>
           <main>{children}</main>

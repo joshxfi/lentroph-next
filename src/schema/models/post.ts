@@ -26,6 +26,7 @@ builder.queryFields((t) => ({
       prisma.post.findMany({
         ...query,
         include: { author: true },
+        orderBy: { createdAt: "desc" },
       }),
   }),
 }));
