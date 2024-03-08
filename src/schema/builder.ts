@@ -2,7 +2,7 @@ import prisma from "@/lib/db";
 import SchemaBuilder from "@pothos/core";
 import { DateResolver } from "graphql-scalars";
 import PrismaPlugin from "@pothos/plugin-prisma";
-import type PrismaTypes from "@/prisma/__generated__/pothos-types";
+import type PrismaTypes from '@pothos/plugin-prisma/generated';
 
 const builder = new SchemaBuilder<{
   Context: {
