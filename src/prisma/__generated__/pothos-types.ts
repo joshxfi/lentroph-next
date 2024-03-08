@@ -1,5 +1,5 @@
 /* eslint-disable */
-import type { Prisma, User, Account, Session, VerificationToken, Post, Upvote, Tag } from "@prisma/client";
+import type { Prisma, User, Account, Session, VerificationToken, Post, Upvote, Tag } from "./client";
 export default interface PrismaTypes {
     User: {
         Name: "User";
