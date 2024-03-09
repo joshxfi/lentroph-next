@@ -36,7 +36,7 @@ export default function DashboardLayout({
                 cache.updateQuery({ query: PostsList }, (data) => {
                   return {
                     ...data,
-                    posts: [...data.posts, result.addPost],
+                    posts: [result.addPost, ...data.posts],
                   };
                 });
               },

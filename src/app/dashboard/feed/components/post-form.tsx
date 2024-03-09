@@ -30,8 +30,12 @@ const AddPostMutation = graphql(`
     addPost(content: $content) {
       id
       content
+      createdAt
       author {
         id
+        name
+        image
+        email
         username
       }
     }
