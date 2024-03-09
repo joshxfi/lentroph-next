@@ -15,7 +15,7 @@ export const authOptions: NextAuthOptions = {
         createdAt: user.createdAt,
       };
 
-      if (trigger === "update" && newSession?.name) {
+      if (trigger === "update" && newSession?.user.username) {
         _user.username = newSession.user.username;
       }
 

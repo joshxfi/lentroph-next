@@ -1,5 +1,6 @@
 import prisma from "@/lib/db";
 import builder from "../builder";
+import { GraphQLError } from "graphql";
 
 builder.prismaObject("User", {
   fields: (t) => ({
@@ -19,5 +20,35 @@ builder.queryFields((t) => ({
       prisma.user.findMany({
         ...query,
       }),
+  }),
+}));
+
+builder.mutationFields((t) => ({
+  updateUsername: t.prismaField({
+    type: "User",
+    args: {
+      username: t.arg.string({ required: true }),
+    },
+    resolve: async (_query, _root, args, ctx) => {
+      const usernameRegex = /^[a-zA-Z0-9]+$/;
+
+      try {
+        if (!usernameRegex.test(args.username)) {
+          throw new GraphQLError("Username must be alphanumeric");
+        }
+
+        const user = await prisma.user.update({
+          where: { id: ctx.userId },
+          data: {
+            username: args.username,
+          },
+        });
+
+        return user;
+      } catch (err) {
+        console.log(err);
+        throw err;
+      }
+    },
   }),
 }));

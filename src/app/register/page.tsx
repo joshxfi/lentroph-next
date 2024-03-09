@@ -1,93 +1,41 @@
-"use client";
+import { Metadata } from "next";
+import Link from "next/link";
 
-import { signIn, useSession } from "next-auth/react";
 import { Logo } from "@/components/logo";
-import { useRouter } from "next/navigation";
+import { UserAuthForm } from "./components/user-auth-form";
 
-export default function Page() {
-  const { status } = useSession();
-  const router = useRouter();
+export const metadata: Metadata = {
+  title: "Authentication",
+  description: "Authentication forms built using the components.",
+};
 
-  if (status === "authenticated") {
-    router.push("/dashboard");
-  }
-
+export default function AuthenticationPage() {
   return (
-    <div className="flex min-h-full mt-24 flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <Logo className="mx-auto" />
-      </div>
-
-      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6" action="#" method="POST">
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium leading-6 text-gray-900"
-            >
-              Email address
-            </label>
-            <div className="mt-2">
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"
-              />
-            </div>
-          </div>
-
-          <div>
-            <div className="flex items-center justify-between">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Password
-              </label>
-              <div className="text-sm">
-                <a
-                  href="#"
-                  className="font-semibold text-violet-600 hover:text-violet-500"
-                >
-                  Forgot password?
-                </a>
-              </div>
-            </div>
-            <div className="mt-2">
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"
-              />
-            </div>
-          </div>
-
-          <div>
-            <button
-              type="submit"
-              className="flex w-full justify-center rounded-md bg-violet-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600"
-            >
-              Sign in
-            </button>
-          </div>
-        </form>
-
-        <p className="mt-10 text-center text-sm text-gray-500">
-          Already part of the community?{" "}
-          <button
-            onClick={() => signIn("google")}
-            className="font-semibold leading-6 text-violet-600 hover:text-violet-500"
-          >
-            Login
-          </button>
+    <div className="mx-auto flex w-full flex-col space-y-6 sm:w-[450px] bg-white p-12 shadow-sm rounded-lg">
+      <div className="flex flex-col space-y-2 text-center">
+        <Logo className="mx-auto mb-2" />
+        <p className="text-sm text-muted-foreground">
+          Connect your Google account to get started.
         </p>
       </div>
+      <UserAuthForm />
+      <p className="px-8 text-center text-sm text-muted-foreground pt-8">
+        By clicking continue, you agree to our{" "}
+        <Link
+          href="/terms"
+          className="underline underline-offset-4 hover:text-primary"
+        >
+          Terms of Service
+        </Link>{" "}
+        and{" "}
+        <Link
+          href="/privacy"
+          className="underline underline-offset-4 hover:text-primary"
+        >
+          Privacy Policy
+        </Link>
+        .
+      </p>
     </div>
   );
 }

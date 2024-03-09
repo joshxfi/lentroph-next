@@ -18,10 +18,13 @@ export default function DashboardLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { status } = useSession();
+  const { data, status } = useSession();
   const router = useRouter();
 
-  if (status === "unauthenticated") {
+  if (
+    status === "unauthenticated" ||
+    (status === "authenticated" && !data.user.username)
+  ) {
     router.push("/");
   }
 
