@@ -8,6 +8,8 @@ import {
   createClient,
   gql,
 } from "@urql/next";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { cacheExchange } from "@urql/exchange-graphcache";
 import { DashboardNavbar } from "./components/navbar";
 
@@ -16,6 +18,13 @@ export default function DashboardLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { status } = useSession();
+  const router = useRouter();
+
+  if (status === "unauthenticated") {
+    router.push("/");
+  }
+
   const [client, ssr] = useMemo(() => {
     const ssr = ssrExchange();
     const client = createClient({
