@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { PaymentMethod } from "./payment-method";
-import { OrgForm } from "./org-form";
+import { OrgSheet } from "./org-sheet";
 
 type Props = {
   user: FragmentOf<typeof UserFields>;
@@ -63,7 +63,7 @@ export function UserDetails({ user, children }: Props) {
           <div className="p-6 bg-white shadow-sm rounded-md items-center">
             <div className="flex justify-between mb-2">
               <h3 className="text-base font-semibold">Your Organizations</h3>
-              <OrgForm />
+              <OrgSheet />
             </div>
 
             {!data.bio ? (

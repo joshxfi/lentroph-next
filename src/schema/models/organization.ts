@@ -16,7 +16,7 @@ builder.prismaObject("Organization", {
       nullable: true,
     }),
     owner: t.relation("owner"),
-    posts: t.relation("donations"),
+    donations: t.relation("donations"),
   }),
 });
 
@@ -27,6 +27,41 @@ builder.queryFields((t) => ({
       try {
         const orgs = await prisma?.organization.findMany();
         return orgs;
+      } catch (err) {
+        throw err;
+      }
+    },
+  }),
+}));
+
+const AddOrgInput = builder.inputType("AddOrgInput", {
+  fields: (t) => ({
+    name: t.string({ required: true }),
+    username: t.string({ required: true }),
+    bio: t.string({ required: true }),
+  }),
+});
+
+builder.mutationFields((t) => ({
+  addOrg: t.prismaField({
+    type: "Organization",
+    args: {
+      input: t.arg({ type: AddOrgInput, required: true }),
+    },
+    resolve: async (_query, _root, args, ctx) => {
+      try {
+        const org = await prisma.organization.create({
+          data: {
+            owner: {
+              connect: {
+                id: ctx.userId,
+              },
+            },
+            ...args.input,
+          },
+        });
+
+        return org;
       } catch (err) {
         throw err;
       }

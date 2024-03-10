@@ -20,6 +20,45 @@ export type introspection = {
     "subscriptionType": null,
     "types": [
       {
+        "kind": "INPUT_OBJECT",
+        "name": "AddOrgInput",
+        "inputFields": [
+          {
+            "name": "bio",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "name": "name",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            }
+          },
+          {
+            "name": "username",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            }
+          }
+        ]
+      },
+      {
         "kind": "SCALAR",
         "name": "Boolean"
       },
@@ -120,6 +159,30 @@ export type introspection = {
         "name": "Mutation",
         "fields": [
           {
+            "name": "addOrg",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Organization",
+                "ofType": null
+              }
+            },
+            "args": [
+              {
+                "name": "input",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "AddOrgInput",
+                    "ofType": null
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "addPost",
             "type": {
               "kind": "NON_NULL",
@@ -199,6 +262,24 @@ export type introspection = {
             "args": []
           },
           {
+            "name": "donations",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "Donation",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          },
+          {
             "name": "id",
             "type": {
               "kind": "NON_NULL",
@@ -242,24 +323,6 @@ export type introspection = {
                 "kind": "OBJECT",
                 "name": "User",
                 "ofType": null
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "posts",
-            "type": {
-              "kind": "NON_NULL",
-              "ofType": {
-                "kind": "LIST",
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "Donation",
-                    "ofType": null
-                  }
-                }
               }
             },
             "args": []
