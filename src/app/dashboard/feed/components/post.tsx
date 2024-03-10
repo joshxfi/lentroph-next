@@ -22,7 +22,7 @@ export function Post({ post }: { post: FragmentOf<typeof PostFields> }) {
   const data = readFragment(PostFields, post);
 
   return (
-    <div className="bg-white p-6 rounded-md">
+    <div className="bg-white p-6 rounded-md shadow-sm">
       <div className="flex justify-between">
         <div className="flex items-center space-x-4">
           <Avatar>

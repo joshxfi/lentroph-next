@@ -10,6 +10,15 @@ builder.prismaObject("User", {
     email: t.exposeString("email", { nullable: true }),
     image: t.exposeString("image", { nullable: true }),
     bio: t.exposeString("bio", { nullable: true }),
+    posts: t.relation("posts"),
+
+    createdAt: t.expose("createdAt", {
+      type: "Date",
+    }),
+    updatedAt: t.expose("updatedAt", {
+      type: "Date",
+      nullable: true,
+    }),
   }),
 });
 
@@ -20,6 +29,27 @@ builder.queryFields((t) => ({
       prisma.user.findMany({
         ...query,
       }),
+  }),
+
+  getUser: t.prismaField({
+    type: "User",
+    args: {
+      userId: t.arg.string({ required: true }),
+    },
+    resolve: async (_query, _root, args) => {
+      try {
+        const user = await prisma.user.findUniqueOrThrow({
+          where: { id: args.userId },
+          include: {
+            posts: true,
+          },
+        });
+
+        return user;
+      } catch (err) {
+        throw err;
+      }
+    },
   }),
 }));
 
