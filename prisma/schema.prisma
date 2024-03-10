@@ -54,6 +54,7 @@ model Account {
 model Organization {
     id         String    @id @default(cuid())
     name       String
+    image      String?
     bio        String
     username   String    @unique
     isApproved Boolean   @default(false)
