@@ -10,8 +10,6 @@ builder.prismaObject("User", {
     email: t.exposeString("email", { nullable: true }),
     image: t.exposeString("image", { nullable: true }),
     bio: t.exposeString("bio", { nullable: true }),
-    posts: t.relation("posts"),
-
     createdAt: t.expose("createdAt", {
       type: "Date",
     }),
@@ -19,6 +17,8 @@ builder.prismaObject("User", {
       type: "Date",
       nullable: true,
     }),
+    posts: t.relation("posts"),
+    orgs: t.relation("orgs"),
   }),
 });
 
@@ -42,6 +42,7 @@ builder.queryFields((t) => ({
           where: { id: args.userId },
           include: {
             posts: true,
+            orgs: true,
           },
         });
 

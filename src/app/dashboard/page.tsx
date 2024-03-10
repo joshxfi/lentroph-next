@@ -5,7 +5,12 @@ import { graphql } from "gql.tada";
 import { useQuery } from "@urql/next";
 import { useSession } from "next-auth/react";
 import { Post, PostFields } from "./feed/components/post";
-import { UserDetails, UserFields } from "./components/user-details";
+import {
+  Banner,
+  BannerFields,
+  ProfileBanner,
+} from "./components/profile/banner";
+import { ProfileSidebar, SidebarFields } from "./components/profile/sidebar";
 
 export default function Page() {
   return (
@@ -20,7 +25,8 @@ const GetUserQuery = graphql(
     query GetUser($userId: String!) {
       getUser(userId: $userId) {
         id
-        ...UserFields
+        ...BannerFields
+        ...SidebarFields
         posts {
           id
           ...PostFields
@@ -28,7 +34,7 @@ const GetUserQuery = graphql(
       }
     }
   `,
-  [UserFields, PostFields],
+  [BannerFields, PostFields, SidebarFields],
 );
 
 function Profile() {
@@ -45,13 +51,18 @@ function Profile() {
   return (
     <section className="max-w-screen-lg mx-auto">
       {result.data?.getUser && (
-        <UserDetails user={result.data?.getUser}>
-          <div className="space-y-4 w-full">
-            {result.data?.getUser.posts.map((post) => (
-              <Post key={post.id} post={post} />
-            ))}
+        <>
+          <ProfileBanner user={result.data.getUser} />
+
+          <div className="flex space-x-4">
+            <ProfileSidebar user={result.data?.getUser} />
+            <div className="space-y-4 w-full">
+              {result.data?.getUser.posts.map((post) => (
+                <Post key={post.id} post={post} />
+              ))}
+            </div>
           </div>
-        </UserDetails>
+        </>
       )}
     </section>
   );

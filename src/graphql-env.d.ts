@@ -608,6 +608,24 @@ export type introspection = {
             "args": []
           },
           {
+            "name": "orgs",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "Organization",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
+          },
+          {
             "name": "posts",
             "type": {
               "kind": "NON_NULL",
