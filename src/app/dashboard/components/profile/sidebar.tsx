@@ -2,18 +2,24 @@ import { FragmentOf, graphql, readFragment } from "gql.tada";
 
 import { EditIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+
 import { OrgSheet } from "../org-sheet";
 import { PaymentMethod } from "../payment-method";
+import { Separator } from "@/components/ui/separator";
+import { OrgDialog, OrgDialogFields } from "../org-dialog";
 
-export const SidebarFields = graphql(`
-  fragment SidebarFields on User {
-    bio
-    orgs {
-      id
-      username
+export const SidebarFields = graphql(
+  `
+    fragment SidebarFields on User {
+      bio
+      orgs {
+        id
+        ...OrgDialogFields
+      }
     }
-  }
-`);
+  `,
+  [OrgDialogFields],
+);
 
 export function ProfileSidebar({
   user,
@@ -42,19 +48,17 @@ export function ProfileSidebar({
       <div className="p-6 bg-white shadow-sm rounded-md items-center">
         <div className="flex justify-between mb-2">
           <h3 className="text-base font-semibold">Your Organizations</h3>
-          <OrgSheet />
+          {!data.orgs.length && <OrgSheet />}
         </div>
+
+        <Separator className="mb-4" />
 
         {!data.orgs.length ? (
           <p className="text-zinc-500">
             Click the add icon to create an organization
           </p>
         ) : (
-          data.orgs.map((org) => (
-            <div key={org.id}>
-              <p>{org.username}</p>
-            </div>
-          ))
+          data.orgs.map((org) => <OrgDialog key={org.id} org={org} />)
         )}
       </div>
 
