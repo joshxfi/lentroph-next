@@ -34,7 +34,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
     updateUsernameFn({ username }).then((res) => {
       if (res.error) {
-        toast.error(res.error.message);
+        toast.error(res.error.message.replace("[GraphQL] ", ""));
         return;
       }
 
@@ -58,6 +58,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                 <Input
                   id="username"
                   value={username}
+                  minLength={3}
+                  maxLength={15}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="Write your username"
                   type="text"
@@ -75,22 +77,32 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           </form>
         )}
 
-        {status === "unauthenticated" ||
-          (status === "loading" && (
-            <Button
-              variant="secondary"
-              onClick={() => signIn("google")}
-              type="button"
-              disabled={status === "loading"}
-            >
-              {status === "loading" ? (
-                <SpinnerIcon className="mr-2 h-4 w-4" />
-              ) : (
-                <GoogleIcon className="mr-2 h-4 w-4" />
-              )}{" "}
-              Sign in with Google
-            </Button>
-          ))}
+        {status === "loading" && (
+          <Button
+            variant="secondary"
+            onClick={() => signIn("google")}
+            type="button"
+            disabled={status === "loading"}
+          >
+            {status === "loading" ? (
+              <SpinnerIcon className="mr-2 h-4 w-4" />
+            ) : (
+              <GoogleIcon className="mr-2 h-4 w-4" />
+            )}{" "}
+            Sign in with Google
+          </Button>
+        )}
+
+        {status === "unauthenticated" && (
+          <Button
+            variant="secondary"
+            onClick={() => signIn("google")}
+            type="button"
+          >
+            <GoogleIcon className="mr-2 h-4 w-4" />
+            Sign in with Google
+          </Button>
+        )}
       </div>
     );
 }
