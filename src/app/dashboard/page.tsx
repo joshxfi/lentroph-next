@@ -5,11 +5,7 @@ import { graphql } from "gql.tada";
 import { useQuery } from "@urql/next";
 import { useSession } from "next-auth/react";
 import { Post, PostFields } from "./feed/components/post";
-import {
-  Banner,
-  BannerFields,
-  ProfileBanner,
-} from "./components/profile/banner";
+import { BannerFields, ProfileBanner } from "./components/profile/banner";
 import { ProfileSidebar, SidebarFields } from "./components/profile/sidebar";
 
 export default function Page() {
