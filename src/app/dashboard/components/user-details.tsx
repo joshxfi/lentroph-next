@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { PaymentMethod } from "./payment-method";
+import { OrgForm } from "./org-form";
 
 type Props = {
   user: FragmentOf<typeof UserFields>;
@@ -44,10 +45,8 @@ export function UserDetails({ user, children }: Props) {
 
       <div className="flex space-x-4">
         <aside className="w-2/3 space-y-4">
-          <PaymentMethod />
-
           <div className="p-6 bg-white shadow-sm rounded-md items-center">
-            <div className="flex justify-between mb-6">
+            <div className="flex justify-between mb-2">
               <h3 className="text-base font-semibold">About</h3>
               <Button variant="secondary" size="icon">
                 <EditIcon className="h-5 w-5" />
@@ -55,11 +54,28 @@ export function UserDetails({ user, children }: Props) {
             </div>
 
             {!data.bio ? (
-              <p className="text-zinc-500">Click the edit icon to change bio</p>
+              <p className="text-zinc-500">Click the edit icon to update bio</p>
             ) : (
               <p>{data.bio}</p>
             )}
           </div>
+
+          <div className="p-6 bg-white shadow-sm rounded-md items-center">
+            <div className="flex justify-between mb-2">
+              <h3 className="text-base font-semibold">Your Organizations</h3>
+              <OrgForm />
+            </div>
+
+            {!data.bio ? (
+              <p className="text-zinc-500">
+                Click the add icon to create an organization
+              </p>
+            ) : (
+              <p>{data.bio}</p>
+            )}
+          </div>
+
+          <PaymentMethod />
         </aside>
 
         {children}

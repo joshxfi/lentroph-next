@@ -8,8 +8,7 @@ generator pothos {
 
 datasource db {
     provider     = "postgresql"
-    url          = env("POSTGRES_PRISMA_URL") // uses connection pooling
-    directUrl    = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+    url          = env("POSTGRES_PRISMA_URL")
     relationMode = "prisma"
 }
 
@@ -25,9 +24,11 @@ model User {
     role          Role      @default(USER)
     bio           String?   @db.VarChar(255)
 
-    posts    Post[]
-    accounts Account[]
-    sessions Session[]
+    posts     Post[]
+    accounts  Account[]
+    sessions  Session[]
+    orgs      Organization[]
+    donations Donation[]
 }
 
 model Account {
@@ -47,6 +48,37 @@ model Account {
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
+    @@index([userId])
+}
+
+model Organization {
+    id         String    @id @default(cuid())
+    name       String
+    bio        String
+    username   String    @unique
+    isApproved Boolean   @default(false)
+    createdAt  DateTime  @default(now())
+    updatedAt  DateTime? @updatedAt
+    ownerId    String
+
+    owner     User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+    donations Donation[]
+
+    @@index([ownerId])
+}
+
+model Donation {
+    id        String    @id @default(cuid())
+    amount    Int
+    createdAt DateTime  @default(now())
+    updatedAt DateTime? @updatedAt
+    orgId     String
+    userId    String
+
+    org  Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+    user User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([orgId])
     @@index([userId])
 }
 
