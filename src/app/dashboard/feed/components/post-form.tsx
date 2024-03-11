@@ -18,6 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
+import { PostFields } from "./post";
 
 const FormSchema = z.object({
   content: z.string().max(1500, {
@@ -25,22 +26,17 @@ const FormSchema = z.object({
   }),
 });
 
-const AddPostMutation = graphql(`
-  mutation AddPost($content: String!) {
-    addPost(content: $content) {
-      id
-      content
-      createdAt
-      author {
+const AddPostMutation = graphql(
+  `
+    mutation AddPost($content: String!) {
+      addPost(content: $content) {
         id
-        name
-        image
-        email
-        username
+        ...PostFields
       }
     }
-  }
-`);
+  `,
+  [PostFields],
+);
 
 export function PostForm() {
   const [{ fetching }, addPost] = useMutation(AddPostMutation);

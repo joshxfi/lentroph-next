@@ -6,7 +6,6 @@ import {
   ssrExchange,
   fetchExchange,
   createClient,
-  gql,
 } from "@urql/next";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -37,20 +36,10 @@ export default function DashboardLayout({
           updates: {
             Mutation: {
               addPost(result, _args, cache, _info) {
-                const PostsList = gql`
-                  {
-                    posts {
-                      id
-                    }
-                  }
-                `;
-
-                cache.updateQuery({ query: PostsList }, (data) => {
-                  return {
-                    ...data,
-                    posts: [result.addPost, ...data.posts],
-                  };
-                });
+                const posts = cache.resolve("Query", "posts");
+                if (Array.isArray(posts)) {
+                  cache.link("Query", "posts", [result.addPost, ...posts]);
+                }
               },
 
               addOrg(result, _args, cache) {
