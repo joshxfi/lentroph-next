@@ -32,6 +32,23 @@ builder.queryFields((t) => ({
       }
     },
   }),
+
+  getUserOrgs: t.prismaField({
+    type: ["Organization"],
+    resolve: async (_query, _root, _args, ctx) => {
+      try {
+        const orgs = await prisma?.organization.findMany({
+          where: {
+            ownerId: ctx.userId,
+          },
+        });
+
+        return orgs;
+      } catch (err) {
+        throw err;
+      }
+    },
+  }),
 }));
 
 const AddOrgInput = builder.inputType("AddOrgInput", {
@@ -62,6 +79,25 @@ builder.mutationFields((t) => ({
         });
 
         return org;
+      } catch (err) {
+        throw err;
+      }
+    },
+  }),
+
+  removeOrg: t.boolean({
+    args: {
+      orgId: t.arg.string({ required: true }),
+    },
+    resolve: async (_root, args) => {
+      try {
+        const success = await prisma.organization.delete({
+          where: {
+            id: args.orgId,
+          },
+        });
+
+        return !!success;
       } catch (err) {
         throw err;
       }

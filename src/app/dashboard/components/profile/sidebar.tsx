@@ -7,12 +7,19 @@ import { OrgSheet } from "../org-sheet";
 import { PaymentMethod } from "../payment-method";
 import { Separator } from "@/components/ui/separator";
 import { OrgDialog, OrgDialogFields } from "../org-dialog";
+import { useQuery } from "@urql/next";
 
-export const SidebarFields = graphql(
+export const SidebarFields = graphql(`
+  fragment SidebarFields on User {
+    bio
+  }
+`);
+
+const GetOrgsQuery = graphql(
   `
-    fragment SidebarFields on User {
-      bio
-      orgs {
+    query GetUserOrgs {
+      getUserOrgs {
+        __typename
         id
         ...OrgDialogFields
       }
@@ -26,6 +33,7 @@ export function ProfileSidebar({
 }: {
   user: FragmentOf<typeof SidebarFields>;
 }) {
+  const [result] = useQuery({ query: GetOrgsQuery });
   const data = readFragment(SidebarFields, user);
 
   return (
@@ -48,17 +56,21 @@ export function ProfileSidebar({
       <div className="p-6 bg-white shadow-sm rounded-md items-center">
         <div className="flex justify-between mb-2">
           <h3 className="text-base font-semibold">Your Organizations</h3>
-          {!data.orgs.length && <OrgSheet />}
+          <OrgSheet />
         </div>
 
         <Separator className="mb-4" />
 
-        {!data.orgs.length ? (
+        {!result.data?.getUserOrgs.length ? (
           <p className="text-zinc-500">
             Click the add icon to create an organization
           </p>
         ) : (
-          data.orgs.map((org) => <OrgDialog key={org.id} org={org} />)
+          <div className="space-y-2">
+            {result.data.getUserOrgs.map((org) => (
+              <OrgDialog key={org.id} org={org} />
+            ))}
+          </div>
         )}
       </div>
 

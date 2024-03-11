@@ -207,6 +207,30 @@ export type introspection = {
             ]
           },
           {
+            "name": "removeOrg",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "args": [
+              {
+                "name": "orgId",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "updateUsername",
             "type": {
               "kind": "NON_NULL",
@@ -481,6 +505,24 @@ export type introspection = {
                 }
               }
             ]
+          },
+          {
+            "name": "getUserOrgs",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "LIST",
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "Organization",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "args": []
           },
           {
             "name": "orgs",

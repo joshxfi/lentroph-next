@@ -2,7 +2,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -12,13 +11,23 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { FragmentOf, graphql, readFragment } from "gql.tada";
+import { toast } from "sonner";
+import { useMutation } from "urql";
 
 export const OrgDialogFields = graphql(`
   fragment OrgDialogFields on Organization {
+    __typename
+    id
     bio
     name
     username
     isApproved
+  }
+`);
+
+const RemoveOrgMutation = graphql(`
+  mutation RemoveOrg($orgId: String!) {
+    removeOrg(orgId: $orgId)
   }
 `);
 
@@ -28,6 +37,18 @@ export function OrgDialog({
   org: FragmentOf<typeof OrgDialogFields>;
 }) {
   const data = readFragment(OrgDialogFields, org);
+  const [{ fetching }, removeOrgFn] = useMutation(RemoveOrgMutation);
+
+  const onCancel = () => {
+    removeOrgFn({ orgId: data.id.toString() }).then((res) => {
+      if (res.error) {
+        toast.error(res.error.message);
+        return;
+      }
+
+      toast.success("Request Cancelled");
+    });
+  };
 
   return (
     <Dialog>
@@ -38,7 +59,9 @@ export function OrgDialog({
         >
           <p className="font-medium text-purple-600">@{data.username}</p>
           {data.isApproved ? (
-            <Badge>{data.name}</Badge>
+            <Badge variant="outline" className="bg-green-300">
+              Approved
+            </Badge>
           ) : (
             <Badge variant="outline" className="bg-yellow-300">
               Pending
@@ -67,8 +90,10 @@ export function OrgDialog({
 
         <DialogFooter className="flex sm:justify-between items-center">
           <button
+            onClick={onCancel}
+            disabled={fetching}
             type="button"
-            className="text-red-500 hover:underline text-sm"
+            className="text-red-500 hover:underline text-sm disabled:text-red-300"
           >
             Cancel Request
           </button>

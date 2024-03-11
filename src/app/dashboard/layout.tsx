@@ -52,6 +52,17 @@ export default function DashboardLayout({
                   };
                 });
               },
+
+              addOrg(_result, _args, cache) {
+                cache.invalidate("Organization");
+              },
+
+              removeOrg(_result, args, cache) {
+                cache.invalidate({
+                  __typename: "Organization",
+                  id: args.orgId as string,
+                });
+              },
             },
           },
         }),

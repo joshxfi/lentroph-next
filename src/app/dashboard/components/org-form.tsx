@@ -1,5 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { graphql } from "gql.tada";
+import { useMutation } from "urql";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -15,8 +17,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { graphql } from "gql.tada";
-import { useMutation } from "urql";
 
 const FormSchema = z.object({
   name: z
@@ -33,12 +33,16 @@ const FormSchema = z.object({
     .refine((username) => /^[a-zA-Z0-9_]+$/.test(username), {
       message: "Username can only contain letters, numbers, and underscores",
     }),
-  bio: z.string().max(150, { message: "Bio must not exceed 150 characters." }),
+  bio: z
+    .string()
+    .min(25, { message: "Bio must contain at least 25 characters" })
+    .max(150, { message: "Bio must not exceed 150 characters." }),
 });
 
 const AddOrgMutation = graphql(`
   mutation AddOrg($input: AddOrgInput!) {
     addOrg(input: $input) {
+      __typename
       id
     }
   }
@@ -74,7 +78,7 @@ export function OrgForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-6 bg-white rounded-md p-6"
+        className="space-y-6 bg-white rounded-md pt-6"
       >
         <FormField
           control={form.control}

@@ -20,6 +20,7 @@ const GetUserQuery = graphql(
   `
     query GetUser($userId: String!) {
       getUser(userId: $userId) {
+        __typename
         id
         ...BannerFields
         ...SidebarFields
