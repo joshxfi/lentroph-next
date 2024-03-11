@@ -45,17 +45,10 @@ const ApproveOrgMutation = graphql(
   [OrgCardFields],
 );
 
-const RemoveOrgMutation = graphql(`
-  mutation RemoveOrg($orgId: String!) {
-    removeOrg(orgId: $orgId)
-  }
-`);
-
 export function OrgCard({ org }: { org: FragmentOf<typeof OrgCardFields> }) {
   const data = readFragment(OrgCardFields, org);
   const [{ fetching: approving }, approveOrgFn] =
     useMutation(ApproveOrgMutation);
-  const [{ fetching: removing }, removeOrgFn] = useMutation(RemoveOrgMutation);
 
   const onApprove = () => {
     approveOrgFn({ orgId: data.id.toString(), approve: !data.isApproved }).then(
@@ -72,17 +65,6 @@ export function OrgCard({ org }: { org: FragmentOf<typeof OrgCardFields> }) {
         }
       },
     );
-  };
-
-  const onRevoke = () => {
-    removeOrgFn({ orgId: data.id.toString() }).then((res) => {
-      if (res.error) {
-        toast.error(res.error.message);
-        return;
-      }
-
-      toast.success("Request Revoked");
-    });
   };
 
   return (
@@ -151,15 +133,6 @@ export function OrgCard({ org }: { org: FragmentOf<typeof OrgCardFields> }) {
         <Separator className="my-2" />
 
         <DialogFooter className="flex sm:justify-between items-center">
-          <button
-            onClick={onRevoke}
-            disabled={removing}
-            type="button"
-            className="text-red-500 hover:underline text-sm disabled:text-red-300"
-          >
-            Revoke Organization
-          </button>
-
           <div className="flex space-x-2">
             <Button onClick={onApprove} disabled={approving}>
               {data.isApproved ? "Disable Organization" : "Approve Request"}
