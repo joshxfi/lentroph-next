@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { formatDistanceToNowStrict } from "date-fns";
 
 import { formatDistance } from "@/hooks/format-distance";
@@ -6,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const PostFields = graphql(`
   fragment PostFields on Post {
+    imgUrl
     content
     createdAt
     author {
@@ -53,6 +55,16 @@ export function Post({ post }: { post: FragmentOf<typeof PostFields> }) {
       </div>
 
       <p className="mt-4">{data.content}</p>
+
+      {data.imgUrl && (
+        <Image
+          width={500}
+          height={300}
+          src={data.imgUrl}
+          className="w-full object-cover max-h-[300px] rounded-md mt-4"
+          alt="Post Image"
+        />
+      )}
     </div>
   );
 }

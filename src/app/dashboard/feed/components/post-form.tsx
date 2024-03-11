@@ -1,11 +1,13 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { graphql } from "gql.tada";
-import { useMutation } from "urql";
-import { toast } from "sonner";
 import { z } from "zod";
+import Image from "next/image";
+import { toast } from "sonner";
+import { useState } from "react";
+import { useMutation } from "urql";
+import { graphql } from "gql.tada";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -19,17 +21,33 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { PostFields } from "./post";
+import { UploadButton } from "@/lib/uploadthing";
+import { ImageIcon } from "@/components/icons";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
 
 const FormSchema = z.object({
-  content: z.string().max(1500, {
-    message: "Content must not exceed 1500 characters.",
-  }),
+  content: z
+    .string()
+    .min(1, {
+      message: "Caption must not be empty.",
+    })
+    .max(1500, {
+      message: "Content must not exceed 1500 characters.",
+    }),
 });
 
 const AddPostMutation = graphql(
   `
-    mutation AddPost($content: String!) {
-      addPost(content: $content) {
+    mutation AddPost($content: String!, $imgUrl: String) {
+      addPost(content: $content, imgUrl: $imgUrl) {
         id
         ...PostFields
       }
@@ -40,6 +58,7 @@ const AddPostMutation = graphql(
 
 export function PostForm() {
   const [{ fetching }, addPost] = useMutation(AddPostMutation);
+  const [imgUrl, setImgUrl] = useState("");
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -49,13 +68,14 @@ export function PostForm() {
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    addPost({ content: data.content }).then((res) => {
+    addPost({ content: data.content, imgUrl }).then((res) => {
       if (res.error) {
         toast.error(res.error.message);
         return;
       }
 
       form.reset();
+      setImgUrl("");
       toast.success("Posted successfully.");
     });
   }
@@ -75,6 +95,16 @@ export function PostForm() {
               <FormControl>
                 <Textarea placeholder="What's on your mind?" {...field} />
               </FormControl>
+              {imgUrl && (
+                <Image
+                  width={500}
+                  height={300}
+                  onDoubleClick={() => setImgUrl("")}
+                  src={imgUrl}
+                  className="w-full object-cover max-h-[300px] rounded-md"
+                  alt="Post Image"
+                />
+              )}
               <FormDescription>
                 Creating an impact, one post at a time.
               </FormDescription>
@@ -82,9 +112,41 @@ export function PostForm() {
             </FormItem>
           )}
         />
-        <Button disabled={fetching} type="submit">
-          Submit
-        </Button>
+        <div className="flex space-x-2">
+          <Button disabled={fetching} type="submit">
+            Create Post
+          </Button>
+
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button
+                variant="secondary"
+                size="icon"
+                className="border border-purple-700"
+              >
+                <ImageIcon className="h-5 w-5" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Upload photo</DialogTitle>
+                <DialogDescription>
+                  Click the button below to add an image to your post.
+                </DialogDescription>
+              </DialogHeader>
+              <Separator className="my-4" />
+              <UploadButton
+                endpoint="imageUploader"
+                onClientUploadComplete={(res) => {
+                  setImgUrl(res[0].url);
+                }}
+                onUploadError={(error: Error) => {
+                  toast(error.message);
+                }}
+              />
+            </DialogContent>
+          </Dialog>
+        </div>
       </form>
     </Form>
   );

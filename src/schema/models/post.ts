@@ -6,6 +6,7 @@ import builder from "../builder";
 builder.prismaObject("Post", {
   fields: (t) => ({
     id: t.exposeID("id"),
+    imgUrl: t.exposeString("imgUrl", { nullable: true }),
     content: t.exposeString("content"),
     createdAt: t.expose("createdAt", {
       type: "Date",
@@ -36,13 +37,15 @@ builder.mutationFields((t) => ({
     type: "Post",
     args: {
       content: t.arg.string({ required: true }),
+      imgUrl: t.arg.string(),
     },
-    resolve: async (_, __, args, ctx) => {
+    resolve: async (_query, _root, args, ctx) => {
       try {
         const success = await prisma.post.create({
           data: {
             id: nanoid(11),
             content: args.content,
+            imgUrl: args.imgUrl,
             author: { connect: { id: ctx.userId } },
           },
           include: { author: true },
