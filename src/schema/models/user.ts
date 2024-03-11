@@ -41,7 +41,11 @@ builder.queryFields((t) => ({
         const user = await prisma.user.findUniqueOrThrow({
           where: { id: args.userId },
           include: {
-            posts: true,
+            posts: {
+              orderBy: {
+                createdAt: "desc",
+              },
+            },
             orgs: true,
           },
         });

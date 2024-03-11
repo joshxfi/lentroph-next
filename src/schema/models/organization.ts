@@ -47,7 +47,11 @@ builder.queryFields((t) => ({
           include: {
             owner: true,
             donations: true,
-            posts: true,
+            posts: {
+              orderBy: {
+                createdAt: "desc",
+              },
+            },
           },
         });
 
