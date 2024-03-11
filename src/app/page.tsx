@@ -1,7 +1,5 @@
-import Link from "next/link";
 import Image from "next/image";
 import { Logo } from "@/components/logo";
-import { buttonVariants } from "@/components/ui/button";
 
 export default function Home() {
   return (
@@ -24,10 +22,13 @@ export default function Home() {
               </p>
 
               <div className="mt-10 flex items-center gap-x-6">
-                <Link href="/register" className={buttonVariants()}>
+                <a
+                  href="/register"
+                  className="rounded-full bg-gradient-to-r from-purple-500 to-purple-600 px-8 py-4 font-bold text-white inline-block"
+                >
                   Get started
-                </Link>
-                <a href="#" className="text-sm font-semibold text-gray-900">
+                </a>
+                <a href="#" className="font-semibold text-gray-900">
                   Learn more <span aria-hidden="true">&rarr;</span>
                 </a>
               </div>
