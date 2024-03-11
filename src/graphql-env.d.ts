@@ -35,6 +35,17 @@ export type introspection = {
             }
           },
           {
+            "name": "image",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            }
+          },
+          {
             "name": "name",
             "type": {
               "kind": "NON_NULL",

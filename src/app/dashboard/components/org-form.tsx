@@ -1,9 +1,10 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { z } from "zod";
+import Image from "next/image";
+import { toast } from "sonner";
 import { graphql } from "gql.tada";
 import { useMutation } from "urql";
-import { toast } from "sonner";
-import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -18,6 +19,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { OrgFields } from "./org-dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { ImageIcon } from "@/components/icons";
+import { Separator } from "@/components/ui/separator";
+import { UploadButton } from "@/lib/uploadthing";
+import { useState } from "react";
 
 const FormSchema = z.object({
   name: z
@@ -55,6 +68,7 @@ const AddOrgMutation = graphql(
 
 export function OrgForm() {
   const [{ fetching }, addOrgFn] = useMutation(AddOrgMutation);
+  const [imgUrl, setImgUrl] = useState("");
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -66,8 +80,16 @@ export function OrgForm() {
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
+    if (!imgUrl) {
+      toast.error("You must add the organization logo.");
+      return;
+    }
+
     addOrgFn({
-      input: data,
+      input: {
+        ...data,
+        image: imgUrl,
+      },
     }).then((res) => {
       if (res.error) {
         toast.error(res.error.message);
@@ -75,6 +97,7 @@ export function OrgForm() {
       }
 
       form.reset();
+      setImgUrl("");
       toast.success("Your organization has been sent for review.");
     });
   }
@@ -85,6 +108,50 @@ export function OrgForm() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-6 bg-white rounded-md pt-6"
       >
+        <div>
+          <FormItem>
+            <FormLabel>
+              Organization Logo<span className="text-red-500">*</span>
+            </FormLabel>
+          </FormItem>
+
+          {imgUrl && (
+            <Image
+              width={100}
+              height={100}
+              src={imgUrl}
+              onDoubleClick={() => setImgUrl("")}
+              className="object-cover h-24 w-24 rounded-md my-2 flex-none"
+              alt="Organization Logo"
+            />
+          )}
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="mt-2" variant="secondary">
+                <ImageIcon className="mr-2 h-4 w-4" /> Upload Logo
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Upload photo</DialogTitle>
+                <DialogDescription>
+                  Click the button below to add your organization logo.
+                </DialogDescription>
+              </DialogHeader>
+              <Separator className="my-4" />
+              <UploadButton
+                endpoint="imageUploader"
+                onClientUploadComplete={(res) => {
+                  setImgUrl(res[0].url);
+                }}
+                onUploadError={(error: Error) => {
+                  toast(error.message);
+                }}
+              />
+            </DialogContent>
+          </Dialog>
+        </div>
+
         <FormField
           control={form.control}
           name="name"

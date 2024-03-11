@@ -83,6 +83,7 @@ builder.queryFields((t) => ({
 const AddOrgInput = builder.inputType("AddOrgInput", {
   fields: (t) => ({
     name: t.string({ required: true }),
+    image: t.string({ required: true }),
     username: t.string({ required: true }),
     bio: t.string({ required: true }),
   }),

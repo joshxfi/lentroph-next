@@ -15,12 +15,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
+import Image from "next/image";
 
 export const OrgCardFields = graphql(`
   fragment OrgCardFields on Organization {
     __typename
     id
     name
+    image
     isApproved
     username
     bio
@@ -126,9 +128,18 @@ export function OrgCard({ org }: { org: FragmentOf<typeof OrgCardFields> }) {
           <DialogDescription>{data.bio}</DialogDescription>
         </DialogHeader>
 
-        <p className="text-sm text-zinc-800">
-          Do you want to approve this organization?
-        </p>
+        <div className="space-y-2">
+          <p className="text-purple-700 text-sm">@{data.username}</p>
+          {data.image && (
+            <Image
+              width={100}
+              height={100}
+              src={data.image}
+              className="object-cover h-32 w-32 rounded-md flex-none"
+              alt="Organization Logo"
+            />
+          )}
+        </div>
 
         <Separator className="my-2" />
 
