@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { OrgDialogFields } from "./org-dialog";
+import { OrgFields } from "./org-dialog";
 
 const FormSchema = z.object({
   name: z
@@ -46,11 +46,11 @@ const AddOrgMutation = graphql(
       addOrg(input: $input) {
         __typename
         id
-        ...OrgDialogFields
+        ...OrgFields
       }
     }
   `,
-  [OrgDialogFields],
+  [OrgFields],
 );
 
 export function OrgForm() {

@@ -35,7 +35,7 @@ export default function DashboardLayout({
         cacheExchange({
           updates: {
             Mutation: {
-              addPost(result, _args, cache, _info) {
+              addPost(result, _args, cache) {
                 const posts = cache.resolve("Query", "posts");
                 if (Array.isArray(posts)) {
                   cache.link("Query", "posts", [result.addPost, ...posts]);

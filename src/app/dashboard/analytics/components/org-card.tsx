@@ -1,3 +1,7 @@
+import { toast } from "sonner";
+import { useMutation } from "urql";
+import { FragmentOf, graphql, readFragment } from "gql.tada";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -11,12 +15,10 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { FragmentOf, graphql, readFragment } from "gql.tada";
-import { toast } from "sonner";
-import { useMutation } from "urql";
 
 export const OrgCardFields = graphql(`
   fragment OrgCardFields on Organization {
+    __typename
     id
     name
     isApproved
@@ -32,11 +34,16 @@ export const OrgCardFields = graphql(`
   }
 `);
 
-const ApproveOrgMutation = graphql(`
-  mutation ApproveOrg($orgId: String!, $approve: Boolean!) {
-    approveOrg(orgId: $orgId, approve: $approve)
-  }
-`);
+const ApproveOrgMutation = graphql(
+  `
+    mutation ApproveOrg($orgId: String!, $approve: Boolean!) {
+      approveOrg(orgId: $orgId, approve: $approve) {
+        ...OrgCardFields
+      }
+    }
+  `,
+  [OrgCardFields],
+);
 
 const RemoveOrgMutation = graphql(`
   mutation RemoveOrg($orgId: String!) {
@@ -124,9 +131,15 @@ export function OrgCard({ org }: { org: FragmentOf<typeof OrgCardFields> }) {
           <DialogTitle className="flex space-x-2 items-center">
             <p>{data.name}</p>
 
-            <Badge variant="outline" className="bg-yellow-300">
-              Pending
-            </Badge>
+            {data.isApproved ? (
+              <Badge variant="outline" className="bg-green-400">
+                Approved
+              </Badge>
+            ) : (
+              <Badge variant="outline" className="bg-yellow-300">
+                Pending
+              </Badge>
+            )}
           </DialogTitle>
           <DialogDescription>{data.bio}</DialogDescription>
         </DialogHeader>

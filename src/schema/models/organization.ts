@@ -110,34 +110,34 @@ builder.mutationFields((t) => ({
     },
   }),
 
-  removeOrg: t.prismaField({
-    type: "Organization",
+  removeOrg: t.boolean({
     args: {
       orgId: t.arg.string({ required: true }),
     },
-    resolve: async (_query, _root, args) => {
+    resolve: async (_root, args) => {
       try {
-        const org = await prisma.organization.delete({
+        const success = await prisma.organization.delete({
           where: {
             id: args.orgId,
           },
         });
 
-        return org;
+        return !!success;
       } catch (err) {
         throw err;
       }
     },
   }),
 
-  approveOrg: t.boolean({
+  approveOrg: t.prismaField({
+    type: "Organization",
     args: {
       orgId: t.arg.string({ required: true }),
       approve: t.arg.boolean({ required: true }),
     },
-    resolve: async (_root, args) => {
+    resolve: async (_query, _root, args) => {
       try {
-        const success = await prisma.organization.update({
+        const org = await prisma.organization.update({
           where: {
             id: args.orgId,
           },
@@ -146,7 +146,7 @@ builder.mutationFields((t) => ({
           },
         });
 
-        return !!success;
+        return org;
       } catch (err) {
         throw err;
       }

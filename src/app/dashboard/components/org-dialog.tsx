@@ -16,8 +16,8 @@ import {
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 
-export const OrgDialogFields = graphql(`
-  fragment OrgDialogFields on Organization {
+export const OrgFields = graphql(`
+  fragment OrgFields on Organization {
     __typename
     id
     bio
@@ -27,23 +27,14 @@ export const OrgDialogFields = graphql(`
   }
 `);
 
-const RemoveOrgMutation = graphql(
-  `
-    mutation RemoveOrg($orgId: String!) {
-      removeOrg(orgId: $orgId) {
-        ...OrgDialogFields
-      }
-    }
-  `,
-  [OrgDialogFields],
-);
+export const RemoveOrgMutation = graphql(`
+  mutation RemoveOrg($orgId: String!) {
+    removeOrg(orgId: $orgId)
+  }
+`);
 
-export function OrgDialog({
-  org,
-}: {
-  org: FragmentOf<typeof OrgDialogFields>;
-}) {
-  const data = readFragment(OrgDialogFields, org);
+export function OrgDialog({ org }: { org: FragmentOf<typeof OrgFields> }) {
+  const data = readFragment(OrgFields, org);
   const [{ fetching }, removeOrgFn] = useMutation(RemoveOrgMutation);
 
   const onCancel = () => {
@@ -81,9 +72,15 @@ export function OrgDialog({
           <DialogTitle className="flex space-x-2 items-center">
             <p>{data.name}</p>
 
-            <Badge variant="outline" className="bg-yellow-300">
-              Pending
-            </Badge>
+            {data.isApproved ? (
+              <Badge variant="outline" className="bg-green-400">
+                Approved
+              </Badge>
+            ) : (
+              <Badge variant="outline" className="bg-yellow-300">
+                Pending
+              </Badge>
+            )}
           </DialogTitle>
           <DialogDescription>{data.bio}</DialogDescription>
         </DialogHeader>

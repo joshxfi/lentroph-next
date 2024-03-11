@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { OrgSheet } from "../org-sheet";
 import { PaymentMethod } from "../payment-method";
 import { Separator } from "@/components/ui/separator";
-import { OrgDialog, OrgDialogFields } from "../org-dialog";
+import { OrgDialog, OrgFields } from "../org-dialog";
 import { useQuery } from "@urql/next";
 
 export const SidebarFields = graphql(`
@@ -21,11 +21,11 @@ const GetOrgsQuery = graphql(
       getUserOrgs {
         __typename
         id
-        ...OrgDialogFields
+        ...OrgFields
       }
     }
   `,
-  [OrgDialogFields],
+  [OrgFields],
 );
 
 export function ProfileSidebar({

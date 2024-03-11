@@ -211,8 +211,8 @@ export type introspection = {
             "type": {
               "kind": "NON_NULL",
               "ofType": {
-                "kind": "SCALAR",
-                "name": "Boolean",
+                "kind": "OBJECT",
+                "name": "Organization",
                 "ofType": null
               }
             },
@@ -246,8 +246,8 @@ export type introspection = {
             "type": {
               "kind": "NON_NULL",
               "ofType": {
-                "kind": "OBJECT",
-                "name": "Organization",
+                "kind": "SCALAR",
+                "name": "Boolean",
                 "ofType": null
               }
             },
