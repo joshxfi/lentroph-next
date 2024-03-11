@@ -20,7 +20,9 @@ export function DashboardNavbar() {
           <div className="flex space-x-6">
             <NavLink name="Profile" />
             <NavLink name="Feed" />
-            <NavLink name="Analytics" />
+            {process.env.NEXT_PUBLIC_ADMIN === data?.user.username && (
+              <NavLink name="Analytics" />
+            )}
           </div>
         </section>
 

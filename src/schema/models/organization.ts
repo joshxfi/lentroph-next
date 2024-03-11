@@ -103,4 +103,27 @@ builder.mutationFields((t) => ({
       }
     },
   }),
+
+  approveOrg: t.boolean({
+    args: {
+      orgId: t.arg.string({ required: true }),
+      approve: t.arg.boolean({ required: true }),
+    },
+    resolve: async (_root, args) => {
+      try {
+        const success = await prisma.organization.update({
+          where: {
+            id: args.orgId,
+          },
+          data: {
+            isApproved: args.approve,
+          },
+        });
+
+        return !!success;
+      } catch (err) {
+        throw err;
+      }
+    },
+  }),
 }));

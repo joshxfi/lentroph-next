@@ -13,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Overview } from "./components/overview";
 import { RecentDonations } from "./components/recent-donations";
 import { CalendarDateRangePicker } from "./components/calendar-picker";
+import { Organizations } from "./components/organizations";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -33,9 +34,7 @@ export default function DashboardPage() {
         <Tabs defaultValue="overview" className="space-y-4">
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="analytics" disabled>
-              Revenue
-            </TabsTrigger>
+            <TabsTrigger value="organizations">Organizations</TabsTrigger>
             <TabsTrigger value="reports" disabled>
               Reports
             </TabsTrigger>
@@ -166,6 +165,10 @@ export default function DashboardPage() {
                 </CardContent>
               </Card>
             </div>
+          </TabsContent>
+
+          <TabsContent value="organizations" className="space-y-4">
+            <Organizations />
           </TabsContent>
         </Tabs>
       </div>

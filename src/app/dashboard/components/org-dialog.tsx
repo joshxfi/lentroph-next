@@ -59,7 +59,7 @@ export function OrgDialog({
         >
           <p className="font-medium text-purple-600">@{data.username}</p>
           {data.isApproved ? (
-            <Badge variant="outline" className="bg-green-300">
+            <Badge variant="outline" className="bg-green-400">
               Approved
             </Badge>
           ) : (
@@ -89,14 +89,16 @@ export function OrgDialog({
         <Separator className="my-2" />
 
         <DialogFooter className="flex sm:justify-between items-center">
-          <button
-            onClick={onCancel}
-            disabled={fetching}
-            type="button"
-            className="text-red-500 hover:underline text-sm disabled:text-red-300"
-          >
-            Cancel Request
-          </button>
+          {!data.isApproved && (
+            <button
+              onClick={onCancel}
+              disabled={fetching}
+              type="button"
+              className="text-red-500 hover:underline text-sm disabled:text-red-300"
+            >
+              Cancel Request
+            </button>
+          )}
 
           <div className="flex space-x-2">
             <Button disabled={!data.isApproved}>Switch Account</Button>
