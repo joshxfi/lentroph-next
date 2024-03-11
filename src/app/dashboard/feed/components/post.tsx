@@ -28,13 +28,10 @@ export function Post({ post }: { post: FragmentOf<typeof PostFields> }) {
       <div className="flex justify-between">
         <div className="flex items-center space-x-4">
           <Avatar>
-            <AvatarImage src="/avatars/01.png" />
-            <Avatar>
-              <AvatarImage src={data?.author.image ?? ""} />
-              <AvatarFallback>
-                {data?.author.username?.slice(0, 2).toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
+            <AvatarImage src={data?.author.image ?? ""} />
+            <AvatarFallback>
+              {data?.author.username?.slice(0, 2).toUpperCase()}
+            </AvatarFallback>
           </Avatar>
           <div>
             <p className="text-sm font-medium leading-none">

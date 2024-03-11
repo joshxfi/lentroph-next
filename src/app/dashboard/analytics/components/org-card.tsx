@@ -78,13 +78,10 @@ export function OrgCard({ org }: { org: FragmentOf<typeof OrgCardFields> }) {
         >
           <div className="flex items-center space-x-4">
             <Avatar>
-              <AvatarImage src="/avatars/01.png" />
-              <Avatar>
-                <AvatarImage src={data?.owner.image ?? ""} />
-                <AvatarFallback>
-                  {data?.owner.username?.slice(0, 2).toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
+              <AvatarImage src={data?.owner.image ?? ""} />
+              <AvatarFallback>
+                {data?.owner.username?.slice(0, 2).toUpperCase()}
+              </AvatarFallback>
             </Avatar>
             <div>
               <p className="text-sm font-medium leading-none">

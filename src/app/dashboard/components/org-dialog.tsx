@@ -15,6 +15,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
+import Image from "next/image";
 
 export const OrgFields = graphql(`
   fragment OrgFields on Organization {
@@ -22,6 +23,7 @@ export const OrgFields = graphql(`
     id
     bio
     name
+    image
     username
     isApproved
   }
@@ -53,9 +55,26 @@ export function OrgDialog({ org }: { org: FragmentOf<typeof OrgFields> }) {
       <DialogTrigger asChild>
         <Button
           variant="secondary"
-          className="flex justify-between items-center w-full py-6"
+          className="flex justify-between items-center w-full px-2 py-8"
         >
-          <p className="font-medium text-purple-600">@{data.username}</p>
+          <div className="flex items-center space-x-2">
+            {data.image && (
+              <Image
+                width={100}
+                height={100}
+                src={data.image}
+                className="object-cover h-12 w-12 rounded-md"
+                alt="Organization Logo"
+              />
+            )}
+
+            <div className="text-left">
+              <p className="font-semibold text-purple-800">{data.name}</p>
+              <p className="font-medium text-purple-600 text-xs">
+                @{data.username}
+              </p>
+            </div>
+          </div>
           {data.isApproved ? (
             <Badge variant="outline" className="bg-green-400">
               Approved
@@ -85,10 +104,12 @@ export function OrgDialog({ org }: { org: FragmentOf<typeof OrgFields> }) {
           <DialogDescription>{data.bio}</DialogDescription>
         </DialogHeader>
 
-        <p className="text-sm text-zinc-800">
-          Your organization is currently under review. This could take up to 3
-          business days. Thank you for your patience.
-        </p>
+        {!data.isApproved && (
+          <p className="text-sm text-zinc-800">
+            Your organization is currently under review. This could take up to 3
+            business days. Thank you for your patience.
+          </p>
+        )}
 
         <Separator className="my-2" />
 
