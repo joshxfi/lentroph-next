@@ -1,12 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useSession } from "next-auth/react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -18,13 +17,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
 const profileFormSchema = z.object({
@@ -53,25 +45,18 @@ const profileFormSchema = z.object({
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
-// This can come from your database or API.
-const defaultValues: Partial<ProfileFormValues> = {
-  bio: "I own a computer.",
-  urls: [
-    { value: "https://shadcn.com" },
-    { value: "http://twitter.com/shadcn" },
-  ],
-};
-
 export function ProfileForm() {
+  const { data: session } = useSession();
+
+  const defaultValues: Partial<ProfileFormValues> = {
+    username: session?.user.username,
+    bio: session?.user.bio,
+  };
+
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues,
     mode: "onChange",
-  });
-
-  const { fields, append } = useFieldArray({
-    name: "urls",
-    control: form.control,
   });
 
   function onSubmit(data: ProfileFormValues) {
@@ -88,42 +73,17 @@ export function ProfileForm() {
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="Enter username" {...field} />
               </FormControl>
               <FormDescription>
                 This is your public display name. It can be your real name or a
-                pseudonym. You can only change this once every 30 days.
+                pseudonym.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a verified email to display" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="m@example.com">m@example.com</SelectItem>
-                  <SelectItem value="m@google.com">m@google.com</SelectItem>
-                  <SelectItem value="m@support.com">m@support.com</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormDescription>
-                You can manage verified email addresses in your{" "}
-                <Link href="/examples/forms">email settings</Link>.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+
         <FormField
           control={form.control}
           name="bio"
@@ -145,38 +105,6 @@ export function ProfileForm() {
             </FormItem>
           )}
         />
-        <div>
-          {fields.map((field, index) => (
-            <FormField
-              control={form.control}
-              key={field.id}
-              name={`urls.${index}.value`}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className={cn(index !== 0 && "sr-only")}>
-                    URLs
-                  </FormLabel>
-                  <FormDescription className={cn(index !== 0 && "sr-only")}>
-                    Add links to your website, blog, or social media profiles.
-                  </FormDescription>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          ))}
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            className="mt-2"
-            onClick={() => append({ value: "" })}
-          >
-            Add URL
-          </Button>
-        </div>
         <Button type="submit">Update profile</Button>
       </form>
     </Form>
