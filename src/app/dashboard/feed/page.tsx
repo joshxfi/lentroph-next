@@ -6,6 +6,7 @@ import { graphql } from "gql.tada";
 import { PostForm } from "./components/post-form";
 import { Post, PostFields } from "./components/post";
 import { Separator } from "@/components/ui/separator";
+import { SdgSidebar } from "./components/sdg-sidebar";
 
 export default function Page() {
   return (
@@ -31,12 +32,16 @@ function Feed() {
   const [result] = useQuery({ query: GetPostsQuery });
 
   return (
-    <section className="max-w-screen-sm mx-auto">
-      <PostForm />
-      <Separator className="my-8 bg-zinc-500" />
+    <section className="max-w-screen-xl mx-auto flex space-x-6">
+      <SdgSidebar />
 
-      <div className="space-y-4">
-        {result.data?.posts.map((post) => <Post key={post.id} post={post} />)}
+      <div>
+        <PostForm />
+        <Separator className="my-8 bg-zinc-500" />
+
+        <div className="space-y-4">
+          {result.data?.posts.map((post) => <Post key={post.id} post={post} />)}
+        </div>
       </div>
     </section>
   );
