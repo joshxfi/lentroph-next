@@ -16,7 +16,8 @@ builder.prismaObject("Post", {
       type: "Date",
     }),
 
-    author: t.relation("author"),
+    org: t.relation("org", { nullable: true }),
+    author: t.relation("author", { nullable: true }),
     comments: t.relation("comments"),
   }),
 });
@@ -52,6 +53,35 @@ builder.mutationFields((t) => ({
             author: { connect: { id: ctx.userId } },
           },
           include: { author: true },
+        });
+
+        return success;
+      } catch (err) {
+        console.log(err);
+        throw err;
+      }
+    },
+  }),
+
+  addOrgPost: t.prismaField({
+    type: "Post",
+    args: {
+      orgId: t.arg.string({ required: true }),
+      content: t.arg.string({ required: true }),
+      sdg: t.arg.string(),
+      imgUrl: t.arg.string(),
+    },
+    resolve: async (_query, _root, args) => {
+      try {
+        const success = await prisma.post.create({
+          data: {
+            id: nanoid(11),
+            content: args.content,
+            sdg: args.sdg,
+            imgUrl: args.imgUrl,
+            org: { connect: { id: args.orgId } },
+          },
+          include: { org: true },
         });
 
         return success;

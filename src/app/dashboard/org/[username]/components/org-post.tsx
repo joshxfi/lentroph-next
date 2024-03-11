@@ -7,13 +7,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { sdgs } from "@/lib/utils";
 
-export const PostFields = graphql(`
-  fragment PostFields on Post {
+export const OrgPostFields = graphql(`
+  fragment OrgPostFields on Post {
     sdg
     imgUrl
     content
     createdAt
-    author {
+    org {
       id
       name
       image
@@ -22,26 +22,24 @@ export const PostFields = graphql(`
   }
 `);
 
-export function Post({ post }: { post: FragmentOf<typeof PostFields> }) {
-  const data = readFragment(PostFields, post);
+export function OrgPost({ post }: { post: FragmentOf<typeof OrgPostFields> }) {
+  const data = readFragment(OrgPostFields, post);
 
-  if (!data.author) return <></>;
+  if (!data.org) return <></>
 
   return (
     <div className="bg-white p-6 rounded-md shadow-sm">
       <div className="flex justify-between">
         <div className="flex items-center space-x-4">
           <Avatar>
-            <AvatarImage src={data?.author.image ?? ""} />
+            <AvatarImage src={data?.org.image ?? ""} />
             <AvatarFallback>
-              {data?.author.username?.slice(0, 2).toUpperCase()}
+              {data?.org.username?.slice(0, 2).toUpperCase()}
             </AvatarFallback>
           </Avatar>
           <div>
-            <p className="text-sm font-medium leading-none">
-              {data.author.name}
-            </p>
-            <p className="text-sm text-zinc-600">@{data.author.username}</p>
+            <p className="text-sm font-medium leading-none">{data.org.name}</p>
+            <p className="text-sm text-zinc-600">@{data.org.username}</p>
           </div>
         </div>
 
