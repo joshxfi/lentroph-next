@@ -53,14 +53,17 @@ export default function DashboardLayout({
                 });
               },
 
-              addOrg(_result, _args, cache) {
-                cache.invalidate("Organization");
+              addOrg(result, _args, cache) {
+                const orgs = cache.resolve("Query", "getUserOrgs");
+                if (Array.isArray(orgs)) {
+                  cache.link("Query", "getUserOrgs", [result.addOrg, ...orgs]);
+                }
               },
 
-              removeOrg(_result, args, cache) {
+              removeOrg(_result, _args, cache) {
                 cache.invalidate({
-                  __typename: "Organization",
-                  id: args.orgId as string,
+                  __typename: "Query",
+                  getUserOrgs: true,
                 });
               },
             },

@@ -27,11 +27,16 @@ export const OrgDialogFields = graphql(`
   }
 `);
 
-const RemoveOrgMutation = graphql(`
-  mutation RemoveOrg($orgId: String!) {
-    removeOrg(orgId: $orgId)
-  }
-`);
+const RemoveOrgMutation = graphql(
+  `
+    mutation RemoveOrg($orgId: String!) {
+      removeOrg(orgId: $orgId) {
+        ...OrgDialogFields
+      }
+    }
+  `,
+  [OrgDialogFields],
+);
 
 export function OrgDialog({
   org,

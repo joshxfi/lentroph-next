@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { OrgDialogFields } from "./org-dialog";
 
 const FormSchema = z.object({
   name: z
@@ -39,14 +40,18 @@ const FormSchema = z.object({
     .max(150, { message: "Bio must not exceed 150 characters." }),
 });
 
-const AddOrgMutation = graphql(`
-  mutation AddOrg($input: AddOrgInput!) {
-    addOrg(input: $input) {
-      __typename
-      id
+const AddOrgMutation = graphql(
+  `
+    mutation AddOrg($input: AddOrgInput!) {
+      addOrg(input: $input) {
+        __typename
+        id
+        ...OrgDialogFields
+      }
     }
-  }
-`);
+  `,
+  [OrgDialogFields],
+);
 
 export function OrgForm() {
   const [{ fetching }, addOrgFn] = useMutation(AddOrgMutation);

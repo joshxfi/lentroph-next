@@ -110,19 +110,20 @@ builder.mutationFields((t) => ({
     },
   }),
 
-  removeOrg: t.boolean({
+  removeOrg: t.prismaField({
+    type: "Organization",
     args: {
       orgId: t.arg.string({ required: true }),
     },
-    resolve: async (_root, args) => {
+    resolve: async (_query, _root, args) => {
       try {
-        const success = await prisma.organization.delete({
+        const org = await prisma.organization.delete({
           where: {
             id: args.orgId,
           },
         });
 
-        return !!success;
+        return org;
       } catch (err) {
         throw err;
       }
