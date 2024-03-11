@@ -10,7 +10,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-import { Overview } from "./components/overview";
 import { RecentDonations } from "./components/recent-donations";
 import { CalendarDateRangePicker } from "./components/calendar-picker";
 import { Organizations } from "./components/organizations";
@@ -42,8 +41,8 @@ export default function DashboardPage() {
               Notifications
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="overview" className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <TabsContent value="overview" className="flex w-full space-x-4">
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2 w-full">
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">
@@ -144,16 +143,7 @@ export default function DashboardPage() {
                 </CardContent>
               </Card>
             </div>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-              <Card className="col-span-4">
-                <CardHeader>
-                  <CardTitle>Overview</CardTitle>
-                </CardHeader>
-                <CardContent className="pl-2">
-                  <Overview />
-                </CardContent>
-              </Card>
-              <Card className="col-span-3">
+              <Card className="w-full">
                 <CardHeader>
                   <CardTitle>Recent Donations</CardTitle>
                   <CardDescription>
@@ -164,7 +154,6 @@ export default function DashboardPage() {
                   <RecentDonations />
                 </CardContent>
               </Card>
-            </div>
           </TabsContent>
 
           <TabsContent value="organizations" className="space-y-4">
