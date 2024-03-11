@@ -64,6 +64,7 @@ model Organization {
 
     owner     User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
     donations Donation[]
+    posts     Post[]
 
     @@index([ownerId])
 }
@@ -107,17 +108,22 @@ model Post {
     updatedAt   DateTime @updatedAt
     content     String   @db.VarChar(500)
     isAnonymous Boolean  @default(false)
+    imgUrl      String?
     upvotes     Upvote[]
     tags        Tag[]
 
-    authorId String
-    author   User   @relation(fields: [authorId], references: [id])
+    authorId String?
+    author   User?   @relation(fields: [authorId], references: [id])
+
+    orgId String?
+    org   Organization? @relation(fields: [orgId], references: [id])
 
     parentId String?
     parent   Post?   @relation("PostComments", fields: [parentId], references: [id], onUpdate: Restrict, onDelete: Restrict)
     comments Post[]  @relation("PostComments")
 
     @@index([parentId, createdAt(sort: Desc)])
+    @@index([orgId, parentId, createdAt(sort: Desc)])
     @@index([authorId, parentId, createdAt(sort: Desc)])
 }
 

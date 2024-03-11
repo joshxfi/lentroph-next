@@ -6,6 +6,7 @@ builder.prismaObject("Organization", {
     id: t.exposeID("id"),
     isApproved: t.exposeBoolean("isApproved"),
     username: t.exposeString("username"),
+    image: t.exposeString("image", { nullable: true }),
     name: t.exposeString("name"),
     bio: t.exposeString("bio"),
     createdAt: t.expose("createdAt", {
@@ -17,6 +18,7 @@ builder.prismaObject("Organization", {
     }),
     owner: t.relation("owner"),
     donations: t.relation("donations"),
+    posts: t.relation("posts"),
   }),
 });
 
@@ -27,6 +29,29 @@ builder.queryFields((t) => ({
       try {
         const orgs = await prisma?.organization.findMany();
         return orgs;
+      } catch (err) {
+        throw err;
+      }
+    },
+  }),
+
+  getOrg: t.prismaField({
+    type: "Organization",
+    args: {
+      username: t.arg.string({ required: true }),
+    },
+    resolve: async (_query, _root, args) => {
+      try {
+        const user = await prisma.organization.findUniqueOrThrow({
+          where: { username: args.username },
+          include: {
+            owner: true,
+            donations: true,
+            posts: true,
+          },
+        });
+
+        return user;
       } catch (err) {
         throw err;
       }

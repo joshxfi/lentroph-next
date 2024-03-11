@@ -1,5 +1,10 @@
+import Link from "next/link";
+import { toast } from "sonner";
+import { useMutation } from "urql";
+import { FragmentOf, graphql, readFragment } from "gql.tada";
+
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -10,9 +15,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import { FragmentOf, graphql, readFragment } from "gql.tada";
-import { toast } from "sonner";
-import { useMutation } from "urql";
 
 export const OrgDialogFields = graphql(`
   fragment OrgDialogFields on Organization {
@@ -100,9 +102,16 @@ export function OrgDialog({
             </button>
           )}
 
-          <div className="flex space-x-2">
-            <Button disabled={!data.isApproved}>Switch Account</Button>
-          </div>
+          {!data.isApproved ? (
+            <Button disabled={true}>Switch Account</Button>
+          ) : (
+            <Link
+              href={`/dashboard/org/${data.username}`}
+              className={buttonVariants({ variant: "default" })}
+            >
+              Switch Account
+            </Link>
+          )}
         </DialogFooter>
       </DialogContent>
     </Dialog>
