@@ -111,6 +111,7 @@ model Post {
     imgUrl      String?
     upvotes     Upvote[]
     tags        Tag[]
+    sdg         String?
 
     authorId String?
     author   User?   @relation(fields: [authorId], references: [id])

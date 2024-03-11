@@ -222,6 +222,14 @@ export type introspection = {
                   "name": "String",
                   "ofType": null
                 }
+              },
+              {
+                "name": "sdg",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
               }
             ]
           },
@@ -528,6 +536,15 @@ export type introspection = {
           },
           {
             "name": "imgUrl",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "args": []
+          },
+          {
+            "name": "sdg",
             "type": {
               "kind": "SCALAR",
               "name": "String",

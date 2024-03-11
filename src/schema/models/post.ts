@@ -8,6 +8,7 @@ builder.prismaObject("Post", {
     id: t.exposeID("id"),
     imgUrl: t.exposeString("imgUrl", { nullable: true }),
     content: t.exposeString("content"),
+    sdg: t.exposeString("sdg", { nullable: true }),
     createdAt: t.expose("createdAt", {
       type: "Date",
     }),
@@ -37,6 +38,7 @@ builder.mutationFields((t) => ({
     type: "Post",
     args: {
       content: t.arg.string({ required: true }),
+      sdg: t.arg.string(),
       imgUrl: t.arg.string(),
     },
     resolve: async (_query, _root, args, ctx) => {
@@ -45,6 +47,7 @@ builder.mutationFields((t) => ({
           data: {
             id: nanoid(11),
             content: args.content,
+            sdg: args.sdg,
             imgUrl: args.imgUrl,
             author: { connect: { id: ctx.userId } },
           },

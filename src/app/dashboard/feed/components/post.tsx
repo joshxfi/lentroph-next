@@ -4,9 +4,12 @@ import { formatDistanceToNowStrict } from "date-fns";
 import { formatDistance } from "@/hooks/format-distance";
 import { FragmentOf, graphql, readFragment } from "@/graphql";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { sdgs } from "@/lib/utils";
 
 export const PostFields = graphql(`
   fragment PostFields on Post {
+    sdg
     imgUrl
     content
     createdAt
@@ -61,6 +64,10 @@ export function Post({ post }: { post: FragmentOf<typeof PostFields> }) {
           className="w-full object-cover max-h-[300px] rounded-md mt-4"
           alt="Post Image"
         />
+      )}
+
+      {data.sdg && (
+        <Badge className="mt-4 bg-blue-700 hover:bg-blue-700">{sdgs.find((sdg) => sdg.id === data.sdg)?.name}</Badge>
       )}
     </div>
   );
