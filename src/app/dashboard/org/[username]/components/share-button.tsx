@@ -36,11 +36,19 @@ export function ShareButton() {
             <Label htmlFor="link" className="sr-only">
               Link
             </Label>
-            <Input id="link" defaultValue={window.location.href} readOnly />
+            <Input
+              id="link"
+              defaultValue={
+                typeof window !== "undefined" ? window?.location.href : ""
+              }
+              readOnly
+            />
           </div>
           <Button
             onClick={() => {
-              navigator.clipboard.writeText(window.location.href);
+              navigator.clipboard.writeText(
+                typeof window !== "undefined" ? window?.location.href : "",
+              );
               toast.success("Copied to clipboard!");
             }}
             type="submit"

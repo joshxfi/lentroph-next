@@ -1,7 +1,4 @@
 import { FragmentOf, graphql, readFragment } from "gql.tada";
-
-import { EditIcon } from "@/components/icons";
-import { Button } from "@/components/ui/button";
 import { PaymentMethod } from "@/app/dashboard/components/payment-method";
 
 export const OrgSidebarFields = graphql(`
@@ -12,8 +9,10 @@ export const OrgSidebarFields = graphql(`
 
 export function OrgSidebar({
   org,
+  children,
 }: {
   org: FragmentOf<typeof OrgSidebarFields>;
+  children: React.ReactNode;
 }) {
   const data = readFragment(OrgSidebarFields, org);
 
@@ -22,9 +21,7 @@ export function OrgSidebar({
       <div className="p-6 bg-white shadow-sm rounded-md items-center">
         <div className="flex justify-between mb-2">
           <h3 className="text-base font-semibold">About</h3>
-          <Button variant="secondary" size="icon">
-            <EditIcon className="h-5 w-5" />
-          </Button>
+          {children}
         </div>
 
         {!data.bio ? (

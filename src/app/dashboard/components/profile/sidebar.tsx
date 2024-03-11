@@ -1,13 +1,14 @@
 import { FragmentOf, graphql, readFragment } from "gql.tada";
 
 import { EditIcon } from "@/components/icons";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 
 import { OrgSheet } from "../org-sheet";
 import { PaymentMethod } from "../payment-method";
 import { Separator } from "@/components/ui/separator";
 import { OrgDialog, OrgFields } from "../org-dialog";
 import { useQuery } from "@urql/next";
+import Link from "next/link";
 
 export const SidebarFields = graphql(`
   fragment SidebarFields on User {
@@ -41,9 +42,12 @@ export function ProfileSidebar({
       <div className="p-6 bg-white shadow-sm rounded-md items-center">
         <div className="flex justify-between mb-2">
           <h3 className="text-base font-semibold">About</h3>
-          <Button variant="secondary" size="icon">
+          <Link
+            href="/dashboard/settings"
+            className={buttonVariants({ variant: "secondary", size: "icon" })}
+          >
             <EditIcon className="h-5 w-5" />
-          </Button>
+          </Link>
         </div>
 
         {!data.bio ? (

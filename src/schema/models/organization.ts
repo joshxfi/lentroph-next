@@ -157,4 +157,26 @@ builder.mutationFields((t) => ({
       }
     },
   }),
+
+  editOrg: t.prismaField({
+    type: "Organization",
+    args: {
+      id: t.arg.string({ required: true }),
+      input: t.arg({ type: AddOrgInput, required: true }),
+    },
+    resolve: async (_query, _root, args) => {
+      try {
+        const org = await prisma.organization.update({
+          data: args.input,
+          where: {
+            id: args.id,
+          },
+        });
+
+        return org;
+      } catch (err) {
+        throw err;
+      }
+    },
+  }),
 }));
