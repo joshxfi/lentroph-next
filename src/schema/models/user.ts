@@ -86,4 +86,22 @@ builder.mutationFields((t) => ({
       }
     },
   }),
+
+  updateBio: t.string({
+    args: {
+      bio: t.arg.string({ required: true }),
+    },
+    resolve: async (_root, args, ctx) => {
+      const user = await prisma.user.update({
+        where: {
+          id: ctx.userId,
+        },
+        data: {
+          bio: args.bio,
+        },
+      });
+
+      return user.bio ?? "";
+    },
+  }),
 }));

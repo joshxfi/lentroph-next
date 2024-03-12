@@ -379,6 +379,30 @@ export type introspection = {
             ]
           },
           {
+            "name": "updateBio",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "args": [
+              {
+                "name": "bio",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "updateUsername",
             "type": {
               "kind": "NON_NULL",

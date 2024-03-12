@@ -18,35 +18,44 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { graphql } from "gql.tada";
+import { useMutation } from "urql";
 
 const profileFormSchema = z.object({
   username: z
     .string()
-    .min(2, {
-      message: "Username must be at least 2 characters.",
-    })
-    .max(30, {
-      message: "Username must not be longer than 30 characters.",
+    .min(3, { message: "Username must be more than 2 characters" })
+    .max(30, { message: "Username must not be longer than 30 characters." })
+    .refine((username) => /^[a-zA-Z0-9_]+$/.test(username), {
+      message: "Username can only contain letters, numbers, and underscores",
     }),
-  email: z
-    .string({
-      required_error: "Please select an email to display.",
-    })
-    .email(),
-  bio: z.string().max(160).min(4),
-  urls: z
-    .array(
-      z.object({
-        value: z.string().url({ message: "Please enter a valid URL." }),
-      }),
-    )
-    .optional(),
+  bio: z
+    .string()
+    .min(25, { message: "Bio must contain at least 25 characters" })
+    .max(150, { message: "Bio must not exceed 150 characters." }),
 });
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
+const UpdateUsernameMutation = graphql(`
+  mutation UpdateUsername($username: String!) {
+    updateUsername(username: $username) {
+      username
+    }
+  }
+`);
+
+const UpdateBioMutation = graphql(`
+  mutation UpdateBio($bio: String!) {
+    updateBio(bio: $bio)
+  }
+`);
+
 export function ProfileForm() {
   const { data: session } = useSession();
+
+  const [usernameRes, updateUsernameFn] = useMutation(UpdateUsernameMutation);
+  const [bioRes, updateBioFn] = useMutation(UpdateBioMutation);
 
   const defaultValues: Partial<ProfileFormValues> = {
     username: session?.user.username,
@@ -56,11 +65,41 @@ export function ProfileForm() {
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues,
-    mode: "onChange",
   });
 
   function onSubmit(data: ProfileFormValues) {
-    toast("Success");
+    let error = false;
+
+    if (data.username) {
+      updateUsernameFn({ username: data.username }).then((res) => {
+        if (res.error) {
+          error = true;
+          toast.error(res.error.message);
+          return;
+        }
+
+        form.setValue(
+          "username",
+          usernameRes.data?.updateUsername.username ?? "",
+        );
+      });
+    }
+
+    if (data.username) {
+      updateBioFn({ bio: data.bio }).then((res) => {
+        if (res.error) {
+          error = true;
+          toast.error(res.error.message);
+          return;
+        }
+
+        form.setValue("bio", bioRes.data?.updateBio ?? "");
+      });
+    }
+
+    if (!error) {
+      toast.success("Update successful");
+    }
   }
 
   return (
@@ -105,7 +144,12 @@ export function ProfileForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Update profile</Button>
+        <Button
+          disabled={usernameRes.fetching || bioRes.fetching}
+          type="submit"
+        >
+          Update profile
+        </Button>
       </form>
     </Form>
   );
