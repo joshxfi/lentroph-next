@@ -9,8 +9,6 @@
     "lint": "next lint",
     "generate:db": "prisma generate",
     "push:db": "prisma db push",
-    "docker:down": "docker-compose down",
-    "docker:up": "docker-compose up -d",
     "postinstall": "prisma generate"
   },
   "dependencies": {
