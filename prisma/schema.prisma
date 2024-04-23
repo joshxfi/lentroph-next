@@ -106,7 +106,6 @@ model Post {
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
     content     String
-    isAnonymous Boolean
     imgUrl      String?
     upvotes     Upvote[]
     tags        Tag[]

@@ -71,7 +71,6 @@ CREATE TABLE "Post" (
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
     "content" TEXT NOT NULL,
-    "isAnonymous" BOOLEAN NOT NULL,
     "imgUrl" TEXT,
     "sdg" TEXT,
     "authorId" TEXT,
