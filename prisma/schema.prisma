@@ -7,28 +7,26 @@ generator pothos {
 }
 
 datasource db {
-    provider     = "postgresql"
-    url          = env("POSTGRES_PRISMA_URL")
+    provider     = "sqlite"
+    url          = "file:./dev.db"
     relationMode = "prisma"
 }
 
 model User {
-    id            String    @id @default(cuid())
+    id            String         @id @default(cuid())
     name          String?
-    email         String?   @unique
+    email         String?        @unique
     emailVerified DateTime?
     image         String?
-    username      String?   @unique
-    createdAt     DateTime  @default(now())
-    updatedAt     DateTime? @updatedAt
-    role          Role      @default(USER)
-    bio           String?   @db.VarChar(255)
-
-    posts     Post[]
-    accounts  Account[]
-    sessions  Session[]
-    orgs      Organization[]
-    donations Donation[]
+    username      String?        @unique
+    createdAt     DateTime       @default(now())
+    updatedAt     DateTime?      @updatedAt
+    bio           String?
+    posts         Post[]
+    accounts      Account[]
+    sessions      Session[]
+    orgs          Organization[]
+    donations     Donation[]
 }
 
 model Account {
@@ -37,12 +35,12 @@ model Account {
     type              String
     provider          String
     providerAccountId String
-    refresh_token     String? @db.Text
-    access_token      String? @db.Text
+    refresh_token     String?
+    access_token      String?
     expires_at        Int?
     token_type        String?
     scope             String?
-    id_token          String? @db.Text
+    id_token          String?
     session_state     String?
 
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -106,8 +104,8 @@ model Post {
     id          String   @id
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
-    content     String   @db.VarChar(500)
-    isAnonymous Boolean  @default(false)
+    content     String
+    isAnonymous Boolean
     imgUrl      String?
     upvotes     Upvote[]
     tags        Tag[]
@@ -144,10 +142,4 @@ model Tag {
     name      String   @unique
     createdAt DateTime @default(now())
     posts     Post[]
-}
-
-enum Role {
-    USER
-    MODERATOR
-    ADMIN
 }
