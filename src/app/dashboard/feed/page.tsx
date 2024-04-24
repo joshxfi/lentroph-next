@@ -53,7 +53,7 @@ function Feed() {
     <section className="max-w-screen-lg mx-auto flex space-x-6">
       <SdgSidebar />
 
-      <div className="min-w-[500px]">
+      <div className="max-w-[550px]">
         <PostForm />
         <Separator className="my-8 bg-zinc-300" />
         <div className="space-y-4 mb-4">
