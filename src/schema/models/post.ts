@@ -25,12 +25,20 @@ builder.prismaObject("Post", {
 builder.queryFields((t) => ({
   posts: t.prismaField({
     type: ["Post"],
-    resolve: async (query) =>
-      prisma.post.findMany({
-        ...query,
-        include: { author: true },
-        orderBy: { createdAt: "desc" },
-      }),
+    resolve: async (query) => {
+      try {
+        const posts = await prisma.post.findMany({
+          ...query,
+          include: { author: true },
+          orderBy: { createdAt: "desc" },
+        });
+
+        return posts;
+      } catch (err) {
+        console.log(err);
+        throw err;
+      }
+    },
   }),
 }));
 
