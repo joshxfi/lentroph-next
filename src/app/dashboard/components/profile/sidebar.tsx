@@ -1,7 +1,7 @@
 import { FragmentOf, graphql, readFragment } from "gql.tada";
 
 import { EditIcon } from "@/components/icons";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 
 import { OrgSheet } from "../org-sheet";
 import { PaymentMethod } from "../payment-method";
@@ -38,7 +38,7 @@ export function ProfileSidebar({
   const data = readFragment(SidebarFields, user);
 
   return (
-    <aside className="w-2/3 space-y-4">
+    <aside className="w-2/3 space-y-4 hidden lg:block">
       <div className="p-6 bg-white shadow-sm rounded-md items-center">
         <div className="flex justify-between mb-2">
           <h3 className="text-base font-semibold">About</h3>

@@ -35,6 +35,18 @@ const GetUserQuery = graphql(
   [BannerFields, PostFields, SidebarFields],
 );
 
+const GetPostsQuery = graphql(
+  `
+    query GetPosts {
+      posts {
+        id
+        ...PostFields
+      }
+    }
+  `,
+  [PostFields],
+);
+
 function Profile() {
   const { data: session } = useSession();
 
@@ -46,19 +58,24 @@ function Profile() {
     pause: !session?.user.id,
   });
 
+  const [posts] = useQuery({
+    query: GetPostsQuery,
+    pause: !session?.user.id,
+  });
+
   return (
     <section className="max-w-screen-lg mx-auto">
       {result.data?.getUser && (
         <>
           <ProfileBanner user={result.data.getUser} />
 
-          <div className="flex space-x-4">
+          <div className="flex lg:space-x-4">
             <ProfileSidebar user={result.data?.getUser} />
 
             <div className="w-full space-y-4">
               <PostForm />
               <div className="space-y-4 w-full">
-                {result.data?.getUser.posts.map((post) => (
+                {posts.data?.posts.map((post) => (
                   <Post key={post.id} post={post} />
                 ))}
               </div>
